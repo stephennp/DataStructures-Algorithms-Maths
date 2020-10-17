@@ -157,7 +157,86 @@ The truth table of $p\oplus q$ is-
 
 - Example:
   - Implication : If today is Friday, then it is raining.
-  - The given proposition is of the form p\rightarrow q, where p is “Today is Friday” and q is “It is raining today”. Contrapositive, Converse, and Inverse of the given proposition respectively are-
+  - The given proposition is of the form $p\rightarrow q$, where p is “Today is Friday” and q is “It is raining today”. Contrapositive, Converse, and Inverse of the given proposition respectively are-
     - **Converse** : If it is raining, then today is Friday
     - **Contrapositive** :If it is not raining, then today is not Friday
     - **Inverse** : If today is not Friday, then it is not raining
+
+### 8. Implicit use of Biconditionals 
+- For example consider the following statement:
+- `If you complete your homework, then you can go out and play`. What is really meant is `You can go out and play if and only if you complete your homework`. This statement is logically equivalent to two statements, `If you complete your homework, then you can go out and play` and `You can go out and play only if you complete your homework`.
+- Because of this imprecision in Natural Language, an assumption needs to be made whether a conditional statement in natural language includes its converse or not.
+
+### 9. Precedence order of Logical Connectives
+- Although `parenthesis` can be used to specify the order in which the logical operators in the compound proposition need to be applied, there exists a precedence order in Logical Operators.
+
+  | Operator      | Precedence        |
+  |----------------|----------------------|
+  | $\neg$       | 1        |
+  | $\land$ | 2 |
+  | $\lor$        | 3 |
+  | $\rightarrow$        | 4 |
+  | $\leftrightarrow$        | 5 |
+
+
+## Propositional Equivalances
+### 1. Types of propositions based on Truth values
+- `Tautology` – A proposition which is always `true`, is called a tautology.
+- `Contradiction` – A proposition which is always `false`, is called a contradiction
+- `Contingency` – A proposition that is `neither` a tautology nor a contradiction is called a contingency.
+- Examples:
+  - $p \vee \neg p$  is a tautology.
+  - $p \wedge \neg p$  is a contradiction.
+  - $p \vee q$  is a contingency.
+
+### 2.Definition of Logical Equivalence
+- Two propositions p and q are said to be logically `equivalent` if $p \leftrightarrow q$ is a `Tautology`. - The notation $p\equiv q$ is used to denote that p and q are logically equivalent.
+- Some basic established logical equivalences are tabulated below:
+
+
+  | Equivalence      | Name of Identity        |
+  |----------------|----------------------|
+  | $p\wedge T \equiv p$ <br> $p\lor F \equiv p$       | Identity Law        |
+  | $p\wedge F \equiv F$ <br> $p\lor T \equiv T$  | Domination Law |
+  | $p\wedge p \equiv p$ <br> $p\lor  p \equiv p$       | Idempotent Law |
+  | $\neg(\neg p) \equiv p$       | Double Negation Law |
+  | $p \land q \equiv q \land p$ <br> $p \lor q \equiv q \lor p$      | Commutative Law |
+  | $(p \land q) \land r \equiv p \land (q \land r)$ <br> $(p \lor q) \lor r \equiv p \lor (q \lor r)$      | Associative Law |
+  | $p \land (q \lor r) \equiv (p \land q) \lor (p \land r)$ <br> $p \lor (q \land r) \equiv (p \lor q) \land (p \lor r)$      | Distributive Law |
+  |  $\lnot (p \land q) \equiv \lnot p \lor \lnot q$ <br> $\lnot (p \lor q) \equiv \lnot p \land \lnot q$      | De morgan's Law |
+  | $p \land (p \lor q) \equiv p$ <br> $p \lor (p \land q) \equiv p$      | Absorption Law |
+  | $p \land \neg p \equiv F$ <br> $p \lor \neg p \equiv T$      | Negation Law |
+
+
+- The above Logical Equivalences used only conjunction, disjunction and negation. Other logical Equivalences using conditionals and bi-conditionals are: 
+
+
+  | Operator      |
+  |----------------|
+  | $p\rightarrow q \equiv \neg p\vee q$      |
+  | $p\rightarrow q \equiv \neg q\rightarrow \neg p$ | 
+  | $p\wedge q \equiv \neg(q\rightarrow \neg p)$       | 
+  | $(p\rightarrow q)\wedge (p\rightarrow r) \equiv p\rightarrow (q\wedge r)$        | 
+  | $(p\rightarrow r)\wedge (q\rightarrow r) \equiv (p\vee q)\rightarrow r$       | 
+  | $(p\rightarrow q)\vee (p\rightarrow r) \equiv p\rightarrow (q\vee r)$ |
+  | $(p\rightarrow r)\vee (q\rightarrow r) \equiv (p\wedge q)\rightarrow r$ |
+  | $p\leftrightarrow q \equiv (p\rightarrow q) \wedge (q\rightarrow p)$ |
+  | $p\leftrightarrow q \equiv \neg p \leftrightarrow \neg q$ |
+  | $p\leftrightarrow q \equiv (p\wedge q) \vee (\neg p \wedge \neg q)$ |
+  | $\neg (p\leftrightarrow q) \equiv p\leftrightarrow \neg q$ |
+
+- Example:
+  - Show that $\neg (p\rightarrow q) \equiv p\wedge \neg q$.
+  - Considering LHS:
+   - $\neg (p\rightarrow q) \equiv \neg(\neg p \vee q)$ Using first equivalence  Conditionals 
+   - $\equiv \neg(\neg p) \wedge \neg q$ Using Morgan law
+   - $\equiv p\wedge \neg q$ Using Double negation law
+- Another example:
+  - Show that $\neg(p\vee (\neg p \wedge q)) \equiv \neg p \wedge \neg q$.
+  - Considering LHS,
+   - $\neg(p\vee (\neg p \wedge q)) \equiv \neg p \wedge \neg(\neg p \wedge q)$ Using De Morgan's law
+   - $\equiv\neg p \wedge (\neg(\neg p) \vee \neg q)$ Using De Morgan's law
+   - $\equiv\neg p \wedge (p \vee \neg q)$ UsingDouble negation law
+   - $\equiv(\neg p \wedge p)\vee (\neg p \wedge \neg q)$ Using Distributive law
+   - $\equiv F \vee (\neg p \wedge \neg q)$ Using Negation Law
+   - $\equiv \neg p \wedge \neg q$  Using Identity Law 
