@@ -87,3 +87,57 @@ a `bound variable`.
   - Variables not bound by any quantifiers are called `free variables`.
 2. `Scope` - The part of the logical expression to which a quantifier is applied is called
 the scope of the quantifier.
+
+## Logical Equivalences involving Quantifiers
+- Two logical statements involving predicates and quantifiers are considered equivalent if and only if they have the same truth value no matter which predicates are substituted into these statements irrespective of the domain used for the variables in the propositions.
+- There are two very important equivalences involving quantifiers, given below:
+  1.  $\forall x(P(x)\wedge Q(x)) \equiv \forall xP(x) \wedge \forall xQ(x)$
+
+  2.  $\exists x(P(x)\vee Q(x)) \equiv \exists xP(x) \vee \exists xQ(x)$
+- $P\Leftrightarrow Q$, which can also be restated as $P\Rightarrow Q \wedge Q\Rightarrow P$.
+- If they are equivalent then
+  - $\forall x(P(x)\vee Q(x)) \Leftrightarrow \forall xP(x) \vee \forall xQ(x)$ and,
+  - $\exists x(P(x)\wedge Q(x)) \Leftrightarrow \exists xP(x) \wedge \exists xQ(x)$ both must be true.
+
+- Let us first check for $\forall x(P(x)\vee Q(x)) \Leftrightarrow \forall xP(x) \vee \forall xQ(x)$.
+  - Is $\forall x(P(x)\vee Q(x)) \Rightarrow \forall xP(x) \vee \forall xQ(x)$ true? `No`.
+  - `Proof` – Suppose that the Hypothesis $\forall x(P(x)\vee Q(x))$ is true. That means there are certain `x` for which $P(x)$ is true and others where $Q(x)$ is true.
+  - It is also possible that for some `x` both $P(x)$ and $Q(x)$ are true. But in any case, all `x` must either satisfy $P(x)$ or $Q(x)$ or both, since the hypothesis is true.
+  - The conclusion(RHS) is true when the `disjunction` is true. As is clear from the above reasoning that P`(x)` is true for some values of x and Q(x) for some.
+  - Thus both $\forall xP(x)$ and $\forall xQ(x)$ are `false`, since neither of them are true for all values of x.
+  - In the case where $P(x)$ and $Q(x)$ hold for all x then this equivalence is true, but otherwise it is false.
+
+  - So, $\forall xP(x) \vee \forall xQ(x) \equiv F$. According to our assumption, the hypothesis is true, but our conclusion turned out to be false. This cannot be true for a conditional, therefore the conditional
+$\forall x(P(x)\vee Q(x)) \Rightarrow \forall xP(x) \vee \forall xQ(x)$ is false.
+- Since one conditional is false, the complete biconditional is false.
+Hence, $\forall x(P(x)\vee Q(x)) \not\equiv \forall xP(x) \vee \forall xQ(x)$.
+- In a similar way, it can also be proved that,
+$\exists x(P(x)\wedge Q(x)) \not\equiv \exists xP(x) \wedge \exists xQ(x)$
+
+### Negating Quantified statements
+- Consider the statement `Every Computer Science Graduate has taken a course in Discrete Mathematics`
+- The above statement is a universal quantification, $xP(x)$
+where $P(x)$ is the statement `x has taken a course in Discrete Mathematics` and the domain of `x` is all Computer Science Graduates.
+- The negation of this statement is `It is not the case that every computer science graduate has taken a course in Discrete Mathematics` or simply `There is a computer science graduate who has not taken a course in Discrete Mathematics`.
+- The above statement can be expressed using an existential quantification.
+$\exists x \neg P(x)$
+- Thus, we get the following logical equivalence-
+$\neg \forall xP(x) \equiv \exists x \neg P(x)$
+- These equivalences are nothing but rules for negations of quantifiers. They are also known as `De Morgans’s laws` for quantifiers.
+
+  | Statement      | Equivalent statement |  When `true`?        | When `false` |
+  |----------------|----------|----------------------|------------|
+  | $\neg \exists x P(x)$  |  $\forall  x \neg P(x)$   | $P(x) \equiv F$  for all `x`   | $P(x) \equiv T$  for some `x` |
+  | $\neg \forall xP(x)$  |  $\exists x \neg P(x$   | $\neg P(x) \equiv T$  for all `x`      |  $P(x) \equiv T$  for some `x` |
+
+### Nested Quantifiers
+- It is possible to use two quantifiers such that one quantifier is within the scope of the other one. In such cases the quantifiers are said to be nested.
+- For example, $\forall x \exists y (x + y = 0)$
+- The above statement is read as `For all x, there exists a y such that x +  y = 0`.
+
+ | Statement      | When `true`?        | When `false` |
+  |----------------|----------|----------------------|------------|
+  | $\forall x \forall y P(x,y)$ <br> $\forall y \forall x P(x,y)$ |  $P(x,y) \equiv T$  for every `(x,y)`   | $P(x,y) \equiv F$  for some `x` |
+  | $\forall x \exists y P(x,y)$  |  For every x there is a y such that $P(x,y) \equiv T$   | There is an x such that $P(x,y) \equiv F$ for all y |
+  | $\exists x \forall y P(x,y)$  |  There is an x such that $P(x,y) \equiv T$ for all y  | For every x there is a y such that $P(x,y) \equiv F$ |
+   | $\exists x \exists y P(x,y)$ <br> $\exists y \exists x P(x,y)$ |  $P(x,y) \equiv T$  for some `(x,y)`   | $P(x,y) \equiv F$  for all `(x,y)` |
