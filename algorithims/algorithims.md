@@ -233,6 +233,14 @@ Time Complexity: O(log n)
 ### 15. Memorization and Recursion
 - https://dev.to/ionabrabender/memoization-and-recursion-228f
 
+
+
+
+
+## Machine learning algorithims
+- Linear regression
+- Logistic regression
+- https://towardsdatascience.com/all-machine-learning-algorithms-you-should-know-in-2021-2e357dd494c7
 ## References:
 1. https://dev.to/iuliagroza/complete-introduction-to-the-30-most-essential-data-structures-algorithms-43kd?fbclid=IwAR1WYHQ7loHbuEWo4KefnVHV2AvGurQftrTFdtJx5MobXhSECv-8Ws3bt08
 2. GeeksforGeeks Youtube: https://www.youtube.com/channel/UC0RhatS1pyxInC00YKjjBqQ, thanks so much for much comprehensive videos :)
