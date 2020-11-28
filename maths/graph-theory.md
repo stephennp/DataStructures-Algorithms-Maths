@@ -86,6 +86,31 @@ $2e = \sum_{u\in V} deg(u) = \sum_{u\in V_{1}} deg(u) + \sum_{u\in V_{2}} deg(u)
 4. Hypercube – The Hypercube or n-cube is a graph with $2^n$ vertices each represented by a n-bit string. The vertices which differ by at most 1-bit are connected by edges. A hypercube of $2^n$ vertices is denoted by $Q_{n}$. Total number of edges are $n*2^{n-1}$ with $2^n$ vertices in cube graph.
 5. Bipartite Graphs – A simple graph G is said to be bipartite if its vertex set V can be divided into two disjoint sets such that every edge in G has its initial vertex in the first set and the terminal vertex in the second set. Total number of edges are (n*m) with (n+m) vertices in bipartite graph.
 
+## Types of Graph:
+- `Finite Graphs`: A graph is said to be finite if it has finite number of vertices and finite number of edges.
+- `Infinite Graph`: A graph is said to be infinite if it has infinite number of vertices as well as infinite number of edges.
+- `Trivial Graph`: A graph is said to be trivial if a finite graph contains only one vertex and no edge.
+- `Simple Graph`: A simple graph is a graph which does not contains more than one edge between the pair of vertices. A simple railway tracks connecting different cities is an example of simple graph.
+- `Multi Graph`: Any graph which contain some parallel edges but doesn’t contain any self-loop is called multi graph. For example A Road Map.
+  - `Parallel Edges`: If two vertices are connected with more than one edge than such edges are called parallel edges that is many roots but one destination.
+  - `Loop`: An edge of a graph which join a vertex to itself is called loop or a self-loop.
+- `Null Graph`: A graph of order n and size zero that is a graph which contain n number of vertices but do not contain any edge.
+- `Complete Graph`: A simple graph with n vertices is called a complete graph if the degree of each vertex is n-1, that is, one vertex is attach with n-1 edges. A complete graph is also called Full Graph.
+- `Pseudo Graph`: A graph G with a self loop and some multiple edges is called pseudo graph.
+- `Regular Graph`: A simple graph is said to be regular if all vertices of a graph G are of equal degree. All complete graphs are regular but vice versa is not possible.
+- `Bipartite Graph`: A graph G = (V, E) is said to be bipartite graph if its vertex set V(G) can be partitioned into two non-empty disjoint subsets. V1(G) and V2(G) in such a way that each edge e of E(G) has its one end in V1(G) and other end in V2(G).
+- `Weighted/Labelled Graph`: If the vertices and edges of a graph are labelled with name, data or weight then it is called labelled graph. It is also called Weighted Graph.
+- `Directed/Digraph Graph`: A graph G = (V, E) with a mapping f such that every edge maps onto some ordered pair of vertices (Vi, Vj) is called Digraph. It is also called Directed Graph. Ordered pair (Vi, Vj) means an edge between Vi and Vj with an arrow directed from Vi to Vj.
+- `Subgraph`: A graph G = (V1, E1) is called subgraph of a graph G(V, E) if V1(G) is a subset of V(G) and E1(G) is a subset of E(G) such that each edge of G1 has same end vertices as in G.
+- `Connected or Disconnected Graph`: A graph G is said to be connected if for any pair of vertices (Vi, Vj) of a graph G are reachable from one another. Or a graph is said to be connected if there exist atleast one path between each and every pair of vertices in graph G, otherwise it is disconnected. A null graph with n vertices is disconnected graph consisting of n components. Each component consist of one vertex and no edge.
+- `Cyclic Graph`: A graph G consisting of n vertices and n> = 3 that is V1, V2, V3- – – – – – – – Vn and edges (V1, V2), (V2, V3), (V3, V4)- – – – – – – – — -(Vn, V1) are called cyclic graph.
+## Application of Graphs:
+
+- Computer Science: In computer science, graph is used to represent networks of communication, data organization, computational devices etc.
+- Physics and Chemistry: Graph theory is also used to study molecules in chemistry and physics.
+- Social Science: Graph theory is also widely used in sociology.
+- Mathematics: In this, graphs are useful in geometry and certain parts of topology such as knot theory.
+- Biology: Graph theory is useful in biology and conservation efforts.
 ## References:
 - Connected Graph: https://www.youtube.com/watch?v=z9cTXaLG1kk&ab_channel=WrathofMath
 - Complete Graph: https://www.youtube.com/watch?v=egz_cP6vbIc&ab_channel=WrathofMath
