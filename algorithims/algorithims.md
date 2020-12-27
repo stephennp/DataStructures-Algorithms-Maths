@@ -163,6 +163,31 @@ function largestOfFour(arr) {
 }
 ```
 
+### Confirm the Ending
+
+```javascript
+function confirmEnding(str, target) {
+  if (str.substr(-target.length).indexOf(target) > -1) {
+    return true;
+  }
+  return false;
+}
+
+confirmEnding("Connor", "n");
+```
+
+## Boo whoPassed
+
+Check if a value is classified as a boolean primitive. Return true or false.
+
+```javascript
+function booWho(bool) {
+  return typeof bool == "boolean";
+}
+
+booWho(null);
+```
+
 ## Advance Algorithms
 
 ### 1. Divide and Conquer (DAC)
