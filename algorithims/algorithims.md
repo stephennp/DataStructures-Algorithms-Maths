@@ -188,6 +188,444 @@ function booWho(bool) {
 booWho(null);
 ```
 
+## Title Case a Sentence
+
+- Return the provided string with the first letter of each word capitalized. Make sure the rest of the word is in lower case.
+
+```javascript
+function titleCase(str) {
+  var result = str
+    .toLowerCase()
+    .split(" ")
+    .map((res) => {
+      return res.replace(res[0], res[0].toUpperCase());
+    });
+  return result.join(" ");
+}
+
+titleCase("I'm a little tea pot");
+```
+
+## Slice and Splice
+
+- You are given two arrays and an index.
+
+- Copy each element of the first array into the second array, in order.
+
+- Begin inserting elements at index n of the second array.
+
+```javascript
+function frankenSplice(arr1, arr2, n) {
+  var newArr = [...arr2];
+  newArr.splice(n, 0, ...arr1);
+  return newArr;
+}
+
+frankenSplice(["claw", "tentacle"], ["head", "shoulders", "knees", "toes"], 2);
+```
+
+## Falsy bouncer
+
+- Remove all falsy values from an array.
+
+- Falsy values in JavaScript are false, null, 0, "", undefined, and NaN.
+
+```javascript
+function bouncer(arr) {
+  return arr.filter((res) => {
+    if (res) {
+      return res;
+    }
+  });
+}
+
+bouncer([7, "ate", "", false, 9]);
+```
+
+## Where do I Belong
+
+- Return the lowest index at which a value (second argument) should be inserted into an array (first argument) once it has been sorted. The returned value should be a number.
+
+- For example, getIndexToIns([1,2,3,4], 1.5) should return 1 because it is greater than 1 (index 0), but less than 2 (index 1).
+
+```javascript
+function getIndexToIns(arr, num) {
+  var sorted = arr.sort((a, b) => {
+    return a - b;
+  });
+
+  for (let i = 0; i < sorted.length; i++) {
+    if (num <= sorted[i]) {
+      console.log(i);
+      return i;
+    }
+  }
+
+  return sorted.length;
+}
+
+getIndexToIns([40, 60, 20], 50);
+```
+
+## Mutations
+
+- Return true if the string in the first element of the array contains all of the letters of the string in the second element of the array.
+
+- For example, ["hello", "Hello"], should return true because all of the letters in the second string are present in the first, ignoring case.
+
+- The arguments ["hello", "hey"] should return false because the string "hello" does not contain a "y".
+
+```javascript
+function mutation(arr) {
+  var v1 = arr[0].toLowerCase();
+  var v2 = arr[1].toLowerCase();
+  for (let i = 0; i < v2.length; i++) {
+    if (v1.indexOf(v2[i]) == -1) {
+      return false;
+    }
+  }
+  return true;
+}
+
+mutation(["hello", "Hello"]);
+```
+
+## Chunky Monkey
+
+- Write a function that splits an array (first argument) into groups the length of size (second argument) and returns them as a two-dimensional array.
+
+```javascript
+function chunkArrayInGroups(arr, size) {
+  var mularr = [];
+  var leg = arr.length / size;
+  for (let i = 0; i < leg; i++) {
+    mularr.push(arr.splice(0, size));
+  }
+  return mularr;
+}
+
+chunkArrayInGroups(["a", "b", "c", "d"], 2);
+```
+
+## Sum All Numbers in a Range
+
+- We'll pass you an array of two numbers. Return the sum of those two numbers plus the sum of all the numbers between them. The lowest number will not always come first.
+
+- For example, sumAll([4,1]) should return 10 because sum of all the numbers between 1 and 4 (both inclusive) is 10.
+
+- Solution 1: using max and min
+
+```javascript
+function sumAll(arr) {
+  let min = arr[0];
+  let max = arr[1];
+  if (min - max > 0) {
+    [min, max] = [arr[1], arr[0]];
+  }
+  let sum = 0;
+  for (let i = min; i <= max; i++) {
+    sum += i;
+  }
+  return sum;
+}
+
+sumAll([1, 4]);
+```
+
+- Solution 2: Recursion
+
+```javascript
+function sumAll(arr) {
+  let first = arr[0];
+  let last = arr[1];
+  let step = first - last > 0 ? -1 : 1;
+
+  if (first === last) {
+    return first;
+  }
+
+  return sumAll([step + first, last]) + first;
+}
+
+sumAll([4, 1]);
+```
+
+- Solution 3: using math formular `Using Arithmetic Progression summing formula`
+  sum of a continuous range is `(startNum + endNum) * numCount / 2`.
+
+```javascript
+function sumAll(arr) {
+  let first = arr[0];
+  let last = arr[1];
+
+  let numCount = Math.abs(arr[0] - arr[1]) + 1;
+  // Using Arithmetic Progression summing formula
+  return ((first + last) * numCount) / 2;
+}
+
+sumAll([4, 1]);
+
+console.log(sumAll([4, 1]));
+```
+
+## Diff Two Arrays
+
+- Compare two arrays and return a new array with any items only found in one of the two given arrays, but not both. In other words, return the symmetric difference of the two arrays.
+- Solution 1: Imperative
+
+```javascript
+function diffArray(arr1, arr2) {
+  var newArr = [];
+
+  let diff = function (first, last) {
+    for (let i = 0; i < first.length; i++) {
+      if (last.indexOf(first[i]) === -1) {
+        newArr.push(first[i]);
+      }
+    }
+  };
+  diff(arr1, arr2);
+  diff(arr2, arr1);
+  return newArr;
+}
+
+diffArray([1, 2, 3, 5], [1, 2, 3, 4, 5]);
+```
+
+- Solution 2: merged, filter and include
+
+```javascript
+function diffArray(arr1, arr2) {
+  var newArr = [];
+
+  newArr = arr1.concat(arr2).filter((res) => {
+    return !arr1.includes(res) || !arr2.includes(res);
+  });
+  console.log(newArr);
+  return newArr;
+}
+
+diffArray([1, 2, 3, 5, 6], [1, 2, 3, 4, 5]);
+```
+
+- Solution 3: imperative with ES6
+
+```javascript
+function diffArray(arr1, arr2) {
+  var newArr = [];
+
+  var diff = function (arr1, arr2) {
+    return arr1.filter((res) => {
+      return arr2.indexOf(res) === -1;
+    });
+  };
+  newArr = [...diff(arr1, arr2), ...diff(arr2, arr1)];
+  console.log(newArr);
+  return newArr;
+}
+
+diffArray([1, 2, 3, 5, 6], [1, 2, 3, 4, 5]);
+```
+
+## Seek and Destroy
+
+- You will be provided with an initial array (the first argument in the destroyer function), followed by one or more arguments. Remove all elements from the initial array that are of the same value as these arguments.
+
+- Note: You have to use the arguments object.
+
+- Solution 1: Using spread, filter and include
+
+```javascript
+function destroyer(arr1, ...args) {
+  var arr = arr1.filter((res) => {
+    return !args.includes(res);
+  });
+  return arr;
+}
+-destroyer([1, 2, 3, 1, 2, 3], 2, 3);
+```
+
+- Solution 2: Using Array.protocol.slice with the `Boolean` object as a `filter` for any `null's` created by the delete operator.
+
+```javascript
+function destroyer(arr) {
+  var args = Array.prototype.slice.call(arguments);
+
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < args.length; j++) {
+      if (arr[i] === args[j]) {
+        delete arr[i];
+      }
+    }
+  }
+  return arr.filter(Boolean);
+}
+
+destroyer([1, 2, 3, 1, 2, 3], 2, 3);
+```
+
+## Wherefore art thou
+
+- Make a function that looks through an array of objects (first argument) and returns an array of all objects that have matching name and value pairs (second argument). Each name and value pair of the source object has to be present in the object from the collection if it is to be included in the returned array.
+
+- For example, if the first argument is `[{ first: "Romeo", last: "Montague" }, { first: "Mercutio", last: null }, { first: "Tybalt", last: "Capulet" }]`, and the second argument is `{ last: "Capulet" }`, then you must return the third object from the array (the first argument), because it contains the name and its value, that was passed on as the second argument.
+
+```javascript
+function whatIsInAName(collection, source) {
+  var arr = [];
+  // Only change code below this line
+  for (let i = 0; i < collection.length; i++) {
+    let item = collection[i];
+    let valid = true;
+    for (let key in source) {
+      if (item[key] !== source[key]) {
+        valid = false;
+      }
+    }
+    if (valid) {
+      arr.push(item);
+    }
+  }
+  // Only change code above this line
+  return arr;
+}
+
+whatIsInAName(
+  [
+    { first: "Romeo", last: "Montague" },
+    { first: "Mercutio", last: null },
+    { first: "Tybalt", last: "Capulet" },
+  ],
+  { last: "Capulet" }
+);
+```
+
+- Refactor 1
+
+```javascript
+function whatIsInAName(collection, source) {
+  var arr = [];
+
+  // Only change code below this line
+  arr = collection.filter((item) => {
+    for (let key in source) {
+      if (item[key] !== source[key]) {
+        return false;
+      }
+    }
+    return true;
+  });
+  // Only change code above this line
+  return arr;
+}
+
+whatIsInAName(
+  [
+    { first: "Romeo", last: "Montague" },
+    { first: "Mercutio", last: null },
+    { first: "Tybalt", last: "Capulet" },
+  ],
+  { last: "Capulet" }
+);
+```
+
+- Refactor 2:
+
+```javascript
+function whatIsInAName(collection, source) {
+  var arr = [];
+  var keys = Object.keys(source);
+  // Only change code below this line
+  arr = collection.filter((item) => {
+    return keys.every((key) => {
+      return item.hasOwnProperty(key) && source[key] === item[key];
+    });
+  });
+  // Only change code above this line
+  return arr;
+}
+
+whatIsInAName(
+  [{ apple: 1, bat: 2 }, { apple: 1 }, { apple: 1, bat: 2, cookie: 2 }],
+  { apple: 1, cookie: 2 }
+);
+```
+
+## Spinal Tap Case
+
+- Convert a string to spinal case. Spinal case is all-lowercase-words-joined-by-dashes.
+- My solution
+
+```javascript
+function spinalCase(str) {
+  return str
+    .split(/(?=[A-Z])|\s|_|-/)
+    .join("-")
+    .toLowerCase();
+}
+
+spinalCase("The_Andy_Griffith_Show");
+```
+
+- Solution 1:
+
+```javascript
+function spinalCase(str) {
+  // Create a variable for the white space and underscores.
+  var regex = /\s+|_+/g;
+
+  // Replace low-upper case to low-space-uppercase
+  str = str.replace(/([a-z])([A-Z])/g, "$1 $2");
+  // Replace space and underscore with -
+  return str.replace(regex, "-").toLowerCase();
+}
+
+spinalCase("thisIsSpinalTap");
+```
+
+## Pig Latin
+
+- Pig Latin is a way of altering English Words. The rules are as follows:
+
+- If a word begins with a consonant, take the first consonant or consonant cluster, move it to the end of the word, and add "ay" to it.
+
+- If a word begins with a vowel, just add "way" at the end.
+- My solution
+
+```javascript
+function translatePigLatin(str) {
+  var unVowel = str.match(/^[^aoeui]+/gi) || "";
+  const suffix = unVowel ? "ay" : "way";
+  return str.replace(unVowel, "").concat(unVowel + suffix);
+}
+
+translatePigLatin("algorithm");
+```
+
+- Solution 1: recursion
+
+```javascript
+function translatePigLatin(str, charAt = 0) {
+  var vowel = ["a", "o", "e", "u", "i"];
+  var suffix = "";
+
+  if (vowel.includes(str[0])) {
+    if (charAt == 0) {
+      return str + "way";
+    } else {
+      return str + "ay";
+    }
+  } else {
+    if (charAt == str.length) {
+      return str + "ay";
+    } else {
+      return translatePigLatin(str.slice(1) + str[0], charAt + 1);
+    }
+  }
+}
+translatePigLatin("consonant");
+```
+
 ## Advance Algorithms
 
 ### 1. Divide and Conquer (DAC)
