@@ -626,6 +626,714 @@ function translatePigLatin(str, charAt = 0) {
 translatePigLatin("consonant");
 ```
 
+## Search and Replace
+
+- Perform a search and replace on the sentence using the arguments provided and return the new sentence.
+
+- First argument is the sentence to perform the search and replace on.
+
+- Second argument is the word that you will be replacing (before).
+
+- Third argument is what you will be replacing the second argument with (after).
+
+- Note
+
+  - Preserve the case of the first character in the original word when you are replacing it. For example if you mean to replace the word "Book" with the word "dog", it should be replaced as "Dog"
+
+- My solution:
+
+```javascript
+function myReplace(str, before, after) {
+  let beforeChar = before.charAt(0);
+  let afterChar = after.charAt(0);
+  if (beforeChar == beforeChar.toUpperCase()) {
+    after = after.replace(afterChar, afterChar.toUpperCase());
+  } else {
+    after = after.replace(afterChar, afterChar.toLowerCase());
+  }
+  return str.replace(before, after);
+}
+
+myReplace("He is Sleeping on the couch", "Sleeping", "sitting");
+```
+
+- Solution 1: using indexOf()
+
+```javascript
+function myReplace(str, before, after) {
+  var index = str.indexOf(before);
+
+  if (str[index] == str[index].toUpperCase()) {
+    after = after.charAt(0).toUpperCase() + after.slice(1);
+  } else {
+    after = after.charAt(0).toLowerCase() + after.slice(1);
+  }
+  return str.replace(before, after);
+}
+
+myReplace("Let us go to the store", "store", "mall");
+```
+
+- Solution 2: using regex `/^[A-Z]/`
+
+```javascript
+function myReplace(str, before, after) {
+  if (/^[A-Z]/.test(before)) {
+    after = after.charAt(0).toUpperCase() + after.slice(1);
+  } else {
+    after = after.charAt(0).toLowerCase() + after.slice(1);
+  }
+  return str.replace(before, after);
+}
+
+myReplace("Let us go to the store", "store", "mall");
+```
+
+- Solution 3: using split and forloop
+
+```javascript
+function myReplace(str, before, after) {
+  function applyCasing(source, target) {
+    let sourceArr = source.split("");
+    let targetArr = target.split("");
+
+    for (let i = 0; i < Math.min(sourceArr.length, targetArr.length); i++) {
+      if (/^[A-Z]/.test(sourceArr[i])) {
+        targetArr[i] = targetArr[i].toUpperCase();
+      } else {
+        targetArr[i] = targetArr[i].toLowerCase();
+      }
+    }
+    return targetArr.join("");
+  }
+  return str.replace(before, applyCasing(before, after));
+}
+
+myReplace("Let us go to the store", "store", "mall");
+```
+
+- Solution 3: create helper function
+
+```javascript
+String.prototype.capitalize = function () {
+  return this[0].toUpperCase() + this.slice(1);
+};
+
+function myReplace(str, before, after) {
+  function testCase(str, case1) {
+    if (case1) {
+      return setTest(str, case1);
+    } else {
+      return getTest(str);
+    }
+
+    function getTest(str) {
+      if (str == str.toUpperCase()) {
+        return "toUpperCase";
+      } else if (str == str.toLowerCase()) {
+        return "toLowerCase";
+      } else if (str == str.capitalize()) {
+        return "capitalize";
+      } else {
+        return "normal";
+      }
+    }
+    function setTest(str, cas) {
+      if (cas == "toUpperCase") {
+        return str.toUpperCase();
+      } else if (cas == "toLowerCase") {
+        return str.toLowerCase();
+      } else if (cas == "capitalize") {
+        return str.capitalize();
+      } else {
+        return str;
+      }
+    }
+  }
+  return str.replace(before, testCase(after, testCase(before)));
+}
+
+myReplace("He is Sleeping on the couch", "Sleeping", "sitting");
+```
+
+## DNA Pairing
+
+- The DNA strand is missing the pairing element. Take each character, get its pair, and return the results as a 2d array.
+
+- Base pairs are a pair of AT and CG. Match the missing element to the provided character.
+
+- Return the provided character as the first element in each array.
+
+- For example, for the input GCG, return [["G", "C"], ["C","G"],["G", "C"]]
+
+- The character and its pair are paired up in an array, and all the arrays are grouped into one encapsulating array.
+- My solution
+
+```javascript
+function pairElement(str) {
+  let arr = str.split("");
+  let newArr = [];
+  for (let i = 0; i < arr.length; i++) {
+    switch (arr[i]) {
+      case "A":
+        newArr.push(["A", "T"]);
+        break;
+      case "T":
+        newArr.push(["T", "A"]);
+        break;
+      case "C":
+        newArr.push(["C", "G"]);
+        break;
+      case "G":
+        newArr.push(["G", "C"]);
+        break;
+    }
+  }
+  return newArr;
+}
+
+pairElement("ATCGA");
+```
+
+- Using dictionary mapping:
+
+```javascript
+function pairElement(str) {
+  const dir = {
+    A: "T",
+    T: "A",
+    C: "G",
+    G: "C",
+  };
+  const newArr = str.split("").map((res) => {
+    return [res, dir[res]];
+  });
+  console.log(newArr);
+  return newArr;
+}
+
+pairElement("ATCGA");
+```
+
+## Missing letters
+
+- Find the missing letter in the passed letter range and return it.
+
+- If all letters are present in the range, return undefined.
+
+- My solution:
+
+```javascript
+function fearNotLetter(str) {
+  let firstCode = str.charCodeAt(0);
+
+  for (let i = 0; i < str.length; i++) {
+    let itemCode = str.charCodeAt(i);
+    if (itemCode != firstCode + i) {
+      return String.fromCharCode(firstCode + i);
+    }
+  }
+}
+
+fearNotLetter("abce");
+```
+
+- Solution 1: using Map function
+
+```javascript
+function fearNotLetter(str) {
+  let compare = str.charCodeAt(0),
+    missing;
+
+  str.split("").map((res, index) => {
+    if (str.charCodeAt(index) === compare) {
+      compare++;
+    } else {
+      missing = String.fromCharCode(compare);
+    }
+  });
+  return missing;
+}
+
+fearNotLetter("abce");
+```
+
+- Solution 3: using selection loop
+
+```javascript
+function fearNotLetter(str) {
+  for (let i = 1; str.length; i++) {
+    if (str.charCodeAt(i) - str.charCodeAt(i - 1) > 1) {
+      return String.fromCharCode(str.charCodeAt(i - 1) + 1);
+    }
+  }
+}
+
+fearNotLetter("abce");
+```
+
+## Sorted Union
+
+- Write a function that takes two or more arrays and returns a new array of unique values in the order of the original provided arrays.
+
+- In other words, all values present from all arrays should be included in their original order, but with no duplicates in the final array.
+
+- The unique numbers should be sorted by their original order, but the final array should not be sorted in numerical order.
+- Solution 1: using map and filter
+
+```javascript
+function uniteUnique(...arr) {
+  var newArr = [];
+  arr.map((res) => {
+    var diffs = res.filter((item) => {
+      return !newArr.includes(item);
+    });
+    newArr.push(...diffs);
+  });
+  return newArr;
+}
+
+uniteUnique([1, 3, 2], [5, 2, 1, 4], [2, 1]);
+```
+
+- Solution 1: using reduce and concat
+
+```javascript
+function uniteUnique(...arr) {
+  var newArr = arr.reduce((arr1, arr2) => {
+    console.log(arr1);
+    return arr1.concat(
+      arr2.filter((res) => {
+        return !arr1.includes(res);
+      })
+    );
+  });
+  return newArr;
+}
+
+uniteUnique([1, 3, 2], [5, 2, 1, 4], [2, 1]);
+```
+
+- Solution 2: using Set
+
+```javascript
+function uniteUnique(...arrays) {
+  //make an array out of the given arrays and flatten it (using the spread operator)
+  const flatArray = [].concat(...arrays);
+
+  // create a Set which clears any duplicates since it's a regular set and not a multiset
+  return [...new Set(flatArray)];
+}
+
+// test here
+uniteUnique([1, 3, 2], [5, 2, 1, 4], [2, 1]);
+```
+
+- Solution 3: using Flat and Set
+
+```javascript
+function uniteUnique(...arr) {
+  return [...new Set(arr.flat())];
+}
+
+// Or as an arrow function
+const uniteUnique = (...arr) => [...new Set(arr.flat())];
+```
+
+## Convert HTML Entities
+
+- Convert the characters &, <, >, " (double quote), and ' (apostrophe), in a string to their corresponding HTML entities.
+
+```javascript
+function convertHTML(str) {
+  let dic = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&apos;",
+  };
+
+  var str = str.replace(/[&<>"']/g, (match) => {
+    return dic[match];
+  });
+  return str;
+}
+
+convertHTML("<>");
+```
+
+## Sum All Odd Fibonacci Numbers
+
+- Given a positive integer num, return the sum of all odd Fibonacci numbers that are less than or equal to num.
+
+- The first two numbers in the Fibonacci sequence are 1 and 1. Every additional number in the sequence is the sum of the two previous numbers. The first six numbers of the Fibonacci sequence are 1, 1, 2, 3, 5 and 8.
+
+- For example, sumFibs(10) should return 10 because all odd Fibonacci numbers less than or equal to 10 are 1, 1, 3, and 5.
+- Solution 1: using currentValue and previous Value
+
+```javascript
+function sumFibs(num) {
+  var result = 0;
+
+  let currentValue = 1;
+  let previousValue = 0;
+  while (currentValue <= num) {
+    if (currentValue % 2 !== 0) {
+      result += currentValue;
+    }
+
+    currentValue = currentValue + previousValue;
+    previousValue = currentValue - previousValue;
+  }
+  return result;
+}
+
+sumFibs(1000);
+```
+
+- Solution 2: Using array unshift, filter and reduce
+
+```javascript
+function sumFibs(num) {
+  if (num == 0) {
+    return 0;
+  }
+
+  const arr = [1, 1];
+  let nextEl = 0;
+
+  while ((nextEl = arr[0] + arr[1]) <= num) {
+    arr.unshift(nextEl);
+  }
+
+  var result = arr
+    .filter((res) => res % 2 !== 0)
+    .reduce((acc, res) => acc + res);
+  return result;
+}
+
+sumFibs(1000);
+```
+
+## Sum All Primes
+
+- A prime number is a whole number greater than 1 with exactly two divisors: 1 and itself. For example, 2 is a prime number because it is only divisible by 1 and 2. In contrast, 4 is not prime since it is divisible by 1, 2 and 4.
+
+- Rewrite sumPrimes so it returns the sum of all prime numbers that are less than or equal to num.
+- Solution 1: using 2 for-loops
+
+```javascript
+function sumPrimes(num) {
+  if (num == 1) {
+    return 0;
+  }
+  if (num == 2) {
+    return 2;
+  }
+
+  let arr = [];
+
+  for (let i = 2; i <= num; i++) {
+    const isPrime = false;
+    for (let j = 2; j < i; j++) {
+      if (i % j == 0) {
+        isPrime = true;
+      }
+    }
+    if (!isPrime) {
+      arr.push(i);
+    }
+  }
+  let result = arr.reduce((a, b) => a + b);
+  return result;
+}
+
+sumPrimes(10);
+```
+
+- Solution 2: using sieve of eratosthenes algorithim
+
+```javascript
+function sumPrimes(num) {
+  if (num == 1) {
+    return 0;
+  }
+  if (num == 2) {
+    return 2;
+  }
+
+  let prime = [];
+  let sieve = [];
+  for (let i = 2; i <= num; i++) {
+    if (!prime[i]) {
+      sieve.push(i);
+      // or let j = i*i
+      for (let j = i << 1; j <= num; j = j + i) {
+        prime[j] = true;
+      }
+    }
+  }
+  let result = sieve.reduce((a, b) => a + b);
+
+  return result;
+}
+
+sumPrimes(10);
+```
+
+- Solution 3: Using helper function and while
+
+```javascript
+function sumPrimes(num) {
+  let isPrime = function (number) {
+    for (let i = 2; i < number; i++) {
+      if (number % i == 0) {
+        return false;
+      }
+    }
+    return number !== 1 && number !== 0;
+  };
+  let sum = 0;
+  let i = 0;
+  while (i <= num) {
+    if (isPrime(i)) {
+      sum += i;
+    }
+    i++;
+  }
+  return sum;
+}
+
+sumPrimes(977);
+```
+
+- Solution 4: using recursion and helper function
+
+```javascript
+function sumPrimes(num) {
+  let isPrime = function (number) {
+    for (let i = 2; i < number; i++) {
+      if (number % i == 0) {
+        return false;
+      }
+    }
+    return number !== 1 && number !== 0;
+  };
+  if (num == 1) {
+    return 0;
+  }
+  if (isPrime(num)) {
+    return sumPrimes(num - 1) + num;
+  }
+  return sumPrimes(num - 1);
+}
+
+sumPrimes(10);
+```
+
+- Solution 5: using filter and reduce then remove all non-primes
+
+```javascript
+function sumPrimes(num) {
+  var arr = Array.from({ length: num + 1 })
+    .map((_, index) => index)
+    .slice(2);
+  console.log(arr);
+  let onlyPrimes = arr.filter((res) => {
+    let m = res - 1;
+    while (m > 1 && m >= Math.sqrt(res)) {
+      if (res % m === 0) return false;
+      m--;
+    }
+    return true;
+  });
+
+  return onlyPrimes.reduce((a, b) => a + b);
+}
+sumPrimes(10);
+```
+
+## Smallest Common Multiple
+
+- Find the smallest common multiple of the provided parameters that can be evenly divided by both, as well as by all sequential numbers in the range between these parameters.
+
+- The range will be an array of two numbers that will not necessarily be in numerical order.
+
+- For example, if given 1 and 3, find the smallest common multiple of both 1 and 3 that is also evenly divisible by all numbers between 1 and 3. The answer here would be 6.
+- Solution 1: Using the first two biggest numbers in array to compare the others with do while function
+
+```javascript
+function smallestCommons(arr) {
+  arr.sort((a, b) => {
+    return b - a;
+  });
+  var newArr = [];
+  for (let i = arr[0]; i > 0; i--) {
+    newArr.push(i);
+  }
+
+  let quot = 0;
+  let loop = 1;
+  let n;
+  do {
+    quot = newArr[0] * loop * newArr[1];
+
+    for (n = 2; n < newArr.length; n++) {
+      if (quot % newArr[n] !== 0) {
+        break;
+      }
+    }
+    loop++;
+  } while (n !== newArr.length);
+
+  return arr;
+}
+smallestCommons([1, 5]);
+```
+
+- Solution 3: Using Euclidean algorithm
+
+```javascript
+function smallestCommons(arr) {
+  let findgcd = function (x, y) {
+    if (y === 0) {
+      return x;
+    } else {
+      return findgcd(y, x % y);
+    }
+  };
+  arr.sort((a, b) => {
+    return b - a;
+  });
+  var newArr = [];
+  for (let i = arr[0]; i >= arr[1]; i--) {
+    newArr.push(i);
+  }
+  var lcm = newArr[0];
+  for (let i = 1; i < newArr.length; i++) {
+    let gcd = findgcd(lcm, newArr[i]);
+    lcm = (lcm * newArr[i]) / gcd;
+  }
+  return lcm;
+}
+
+smallestCommons([18, 23]);
+```
+
+- Solution 4: Using sum up max value if not evenly divided the other numbers
+
+```javascript
+const smallestCommons = (arr) => {
+  let max = Math.max(...arr);
+  let min = Math.min(...arr);
+  // Initially the solution is assigned to the highest value of the array
+  let sol = max;
+
+  for (let i = max - 1; i >= min; i--) {
+    if (sol % i !== 0) {
+      sol += max;
+      i = max;
+    }
+  }
+  console.log(sol);
+  return sol;
+};
+
+smallestCommons([1, 6]);
+```
+
+## Drop it
+
+- Given the array arr, iterate through and remove each element starting from the first element (the 0 index) until the function func returns true when the iterated element is passed through it.
+
+- Then return the rest of the array once the condition is satisfied, otherwise, arr should be returned as an empty array.
+- Solution 1: using for-loop
+
+```javascript
+function dropElements(arr, func) {
+  for (let i = 0; arr.length; i++) {
+    if (func(arr[0])) {
+      break;
+    } else {
+      arr.shift();
+    }
+  }
+  return arr;
+}
+
+dropElements([1, 2, 3], function (n) {
+  return n > 2;
+});
+```
+
+- Solution 2: using while
+
+```javascript
+function dropElements(arr, func) {
+  while (arr.length > 0 && !func(arr[0])) {
+    arr.shift();
+  }
+  return arr;
+}
+
+dropElements([1, 2, 3], function (n) {
+  return n > 2;
+});
+```
+
+- Solution 3: using slice
+
+```javascript
+function dropElements(arr, func) {
+  arr = arr.slice(arr.findIndex(func) >= 0 ? arr.findIndex(func) : arr.length);
+  return arr;
+}
+
+dropElements([1, 2, 3], function (n) {
+  return n > 2;
+});
+```
+
+## Steamroller
+
+- Flatten a nested array. You must account for varying levels of nesting.
+- Solution 1: using recursion and for-loop
+
+```javascript
+function steamrollArray(arr) {
+  var newArr = [];
+  var flatten = function (args) {
+    if (!Array.isArray(args)) {
+      newArr.push(args);
+    } else {
+      for (var item in args) {
+        flatten(args[item]);
+      }
+    }
+  };
+  flatten(arr);
+  return newArr;
+}
+
+steamrollArray([1, [2], [3, [[4]]]]);
+```
+
+- Solution 2: Using some and recursion
+
+```javascript
+function steamrollArray(arr) {
+  let flat = [].concat(...arr);
+  console.log(flat);
+  return flat.some(Array.isArray) ? steamrollArray(flat) : flat;
+}
+
+steamrollArray([1, [2], [3, [[4]]]]);
+```
+
+- References:
+  - https://forum.freecodecamp.org/t/freecodecamp-challenge-guide-smallest-common-multiple/16075
+
 ## Advance Algorithms
 
 ### 1. Divide and Conquer (DAC)
@@ -996,6 +1704,22 @@ sort(originalArray) {
 ### 15. Memorization and Recursion
 
 - https://dev.to/ionabrabender/memoization-and-recursion-228f
+
+### 16. Euclidean algorithms (Basic and Extended)
+
+- GCD of two numbers is the largest number that divides both of them. A simple way to find GCD is to factorize both numbers and multiply common factors.
+
+```javascript
+36 =  2 * 2 * 3 * 3
+60 = 2 * 2 * 3 *5
+GCD = Multiplication of common factor
+    = 2 * 2 * 3
+    = 12
+```
+
+- Basic Euclidean Algorithm for GCD, The algorithm is based on below facts.
+  - If we subtract smaller number from larger (we reduce larger number), GCD doesn’t change. So if we keep subtracting repeatedly the larger of two, we end up with GCD.
+  - Now instead of subtraction, if we divide smaller number, the algorithm stops when we find remainder 0.
 
 ## Machine learning algorithims
 
