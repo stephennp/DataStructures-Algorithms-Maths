@@ -997,6 +997,9 @@ sort(originalArray) {
 
 - https://dev.to/ionabrabender/memoization-and-recursion-228f
 
+
+### 16. Find currenrcy rates path
+- https://stackoverflow.com/questions/3372375/algorithm-to-determine-exchange-rate
 ## Machine learning algorithims
 
 - Linear regression
