@@ -1331,6 +1331,601 @@ function steamrollArray(arr) {
 steamrollArray([1, [2], [3, [[4]]]]);
 ```
 
+## Binary Agents
+
+- Return an English translated sentence of the passed binary string.
+
+- The binary string will be space separated.
+- Solution 1: using parseInt(number,2) to convert from binary to decimal
+
+```javascript
+function binaryAgent(str) {
+  var arr = str.split(" ");
+  var str = arr.reduce((acc, res) => {
+    const decimal = parseInt(res, 2);
+    return acc + String.fromCharCode(decimal);
+  }, "");
+  return str;
+}
+
+binaryAgent(
+  "01000001 01110010 01100101 01101110 00100111 01110100 00100000 01100010 01101111 01101110 01100110 01101001 01110010 01100101 01110011 00100000 01100110 01110101 01101110 00100001 00111111"
+);
+```
+
+- Solution 2: Using Math.pow(number,exponent)
+
+```javascript
+function binaryAgent(str) {
+  var str = str.split(" ");
+  var arr = [];
+  for (let i = 0; i < str.length; i++) {
+    let decimalVal = 0;
+    for (let j = 0; j < str[i].length; j++) {
+      if (str[i][j] == 1) {
+        let pow = Math.pow(2, str[i].length - j - 1);
+
+        decimalVal += pow;
+      }
+    }
+    arr.push(String.fromCharCode(decimalVal));
+  }
+  return arr.join("");
+}
+
+binaryAgent("01000001 01110010");
+```
+
+## Everything Be True
+
+- Check if the predicate (second argument) is truthy on all elements of a collection (first argument).
+
+- In other words, you are given an array collection of objects. The predicate pre will be an object property and you need to return true if its value is truthy. Otherwise, return false.
+
+- In JavaScript, truthy values are values that translate to true when evaluated in a Boolean context.
+
+- Remember, you can access object properties through either dot notation or [] notation.
+
+```javascript
+function truthCheck(collection, pre) {
+  var result = true;
+
+  for (let i = 0; i < collection.length; i++) {
+    console.log(collection[i][pre]);
+    if (!collection[i][pre]) {
+      result = false;
+    }
+  }
+  return result;
+}
+
+truthCheck(
+  [
+    { user: "Tinky-Winky", sex: "male" },
+    { user: "Dipsy", sex: "male" },
+    { user: "Laa-Laa", sex: "female" },
+    { user: "Po", sex: "female" },
+  ],
+  "sex"
+);
+```
+
+## Arguments Optional
+
+- Create a function that sums two arguments together. If only one argument is provided, then return a function that expects one argument and returns the sum.
+
+- For example, addTogether(2, 3) should return 5, and addTogether(2) should return a function.
+
+- Calling this returned function with a single argument will then return the sum:
+
+```javascript
+var sumTwoAnd = addTogether(2);
+
+sumTwoAnd(3) returns 5.
+```
+
+- If either argument isn't a valid number, return undefined.
+- Solution: using some and reduce function
+
+```javascript
+function addTogether() {
+  let arr = [...arguments];
+
+  if (arr.some((res) => typeof res !== "number")) {
+    return undefined;
+  }
+  if (arr.length > 1) {
+    return arr.reduce((a, b) => a + b);
+  } else {
+    return (n) => {
+      return typeof n !== "number" ? undefined : arr[0] + n;
+    };
+  }
+}
+
+addTogether(2, "3");
+```
+
+## Make a Person
+
+- Fill in the object constructor with the following methods below:
+
+```javascript
+getFirstName();
+getLastName();
+getFullName();
+setFirstName(first);
+setLastName(last);
+setFullName(firstAndLast);
+```
+
+- Run the tests to see the expected output for each method. The methods that take an argument must accept only one argument and it has to be a string. These methods must be the only available means of interacting with the object.
+
+```javascript
+var Person = function (firstAndLast) {
+  // Only change code below this line
+  // Complete the method below and implement the others similarly
+  var fullName = firstAndLast;
+  this.getFullName = function () {
+    return fullName;
+  };
+  this.getFirstName = function () {
+    console.log(fullName);
+    return fullName.split(" ")[0];
+  };
+  this.getLastName = function () {
+    return fullName.split(" ")[1];
+  };
+  this.setFirstName = function (first) {
+    fullName = first + " " + fullName.split(" ")[1];
+  };
+  this.setLastName = function (last) {
+    fullName = fullName.split(" ")[0] + " " + last;
+  };
+  this.setFullName = function (firstAndLast) {
+    fullName = firstAndLast;
+  };
+};
+
+var bob = new Person("Bob Ross");
+console.log(bob.firstName);
+```
+
+## Roman Numeral Converter
+
+- Convert the given number into a roman numeral.
+
+- All roman numerals answers should be provided in upper-case.
+- Solution 1: using dictionary and 2 loops
+
+```javascript
+function convertToRoman(num) {
+  var lookup = {
+      M: 1000,
+      CM: 900,
+      D: 500,
+      CD: 400,
+      C: 100,
+      XC: 90,
+      L: 50,
+      XL: 40,
+      X: 10,
+      IX: 9,
+      V: 5,
+      IV: 4,
+      I: 1,
+    },
+    roman = "",
+    i;
+  for (let i in lookup) {
+    while (num >= lookup[i]) {
+      num -= lookup[i];
+      roman += i;
+    }
+  }
+  return roman;
+}
+
+convertToRoman(2);
+```
+
+- Solution 2:
+
+```javascript
+function convertToRoman(num) {
+  var romans = ["I", "V", "X", "L", "C", "D", "M"],
+    ints = [],
+    romanNumber = [],
+    numeral = "",
+    i;
+  while (num) {
+    ints.push(num % 10);
+    num = Math.floor(num / 10);
+  }
+  console.log(ints);
+  for (i = 0; i < ints.length; i++) {
+    units(ints[i]);
+  }
+  function units() {
+    numeral = romans[i * 2];
+    switch (ints[i]) {
+      case 1:
+        romanNumber.push(numeral);
+        break;
+      case 2:
+        romanNumber.push(numeral.concat(numeral));
+        break;
+      case 3:
+        romanNumber.push(numeral.concat(numeral).concat(numeral));
+        break;
+      case 4:
+        romanNumber.push(numeral.concat(romans[i * 2 + 1]));
+        break;
+      case 5:
+        romanNumber.push(romans[i * 2 + 1]);
+        break;
+      case 6:
+        romanNumber.push(romans[i * 2 + 1].concat(numeral));
+        break;
+      case 7:
+        romanNumber.push(romans[i * 2 + 1].concat(numeral).concat(numeral));
+        break;
+      case 8:
+        romanNumber.push(
+          romans[i * 2 + 1].concat(numeral).concat(numeral).concat(numeral)
+        );
+        break;
+      case 9:
+        romanNumber.push(romans[i * 2].concat(romans[i * 2 + 2]));
+    }
+  }
+  return romanNumber.reverse().join("").toString();
+}
+convertToRoman(36);
+```
+
+## Caesars Cipher
+
+- One of the simplest and most widely known ciphers is a Caesar cipher, also known as a shift cipher. In a shift cipher the meanings of the letters are shifted by some set amount.
+
+- A common modern use is the ROT13 cipher, where the values of the letters are shifted by 13 places. Thus 'A' ↔ 'N', 'B' ↔ 'O' and so on.
+
+- Write a function which takes a ROT13 encoded string as input and returns a decoded string.
+
+- All letters will be uppercase. Do not transform any non-alphabetic character (i.e. spaces, punctuation), but do pass them on.
+- Solution 1: my generated code
+
+```javascript
+function rot13(str) {
+  var str = str.split("");
+  var regex = /[^\w]/;
+  var newStr = "";
+  for (let i = 0; i < str.length; i++) {
+    for (let j = 0; j < str[i].length; j++) {
+      if (str[i][j].match(regex)) {
+        newStr += str[i][j];
+        continue;
+      }
+      if (str[i][j].charCodeAt(0) + 13 > 90) {
+        newStr += String.fromCharCode(
+          str[i][j].charCodeAt(0) + 13 - 90 + 65 - 1
+        );
+      } else {
+        newStr += String.fromCharCode(str[i][j].charCodeAt(0) + 13);
+      }
+    }
+  }
+  return newStr;
+}
+
+rot13("SERR CVMMN!");
+```
+
+- Solution 2: using Map
+
+```javascript
+function rot13(str) {
+  var str = str
+    .split("")
+    .map((res) => {
+      var format = res.charCodeAt(res);
+
+      if (format < 65 || format > 90) {
+        return res;
+      }
+      if (format < 78) {
+        return String.fromCharCode(format + 13);
+      } else {
+        return String.fromCharCode(format - 13);
+      }
+    })
+    .join("");
+  return str;
+}
+
+rot13("SERR CVMMN!");
+```
+
+- Solution 3: using modular arithmetic and cyclic nature of rot13 transform
+
+```javascript
+function rot13(str) {
+  var regex = /\w/;
+  var str = str
+    .split("")
+    .map((res) => {
+      if (res.match(regex)) {
+        return String.fromCharCode(((res.charCodeAt(0) - 65 + 13) % 26) + 65);
+      } else {
+        return res;
+      }
+    })
+    .join("");
+  console.log(str);
+  return str;
+}
+
+rot13("SERR CVMMN!");
+```
+
+- Solution 4: using modular arithmetic and indexOf
+
+```javascript
+function rot13(str) {
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  return str
+    .split("")
+    .map((char) => {
+      const pos = alphabet.indexOf(char);
+      return pos >= 0 ? alphabet[(pos + 13) % 26] : char;
+    })
+    .join("");
+}
+```
+
+- References:
+
+  - https://forum.freecodecamp.org/t/freecodecamp-challenge-guide-caesars-cipher/16003
+
+## Telephone Number Validator
+
+- Return true if the passed string looks like a valid US phone number.
+
+- The user may fill out the form field any way they choose as long as it has the format of a valid US number. The following are examples of valid formats for US numbers (refer to the tests below for other variants):
+
+```javascript
+555-555-5555
+(555)555-5555
+(555) 555-5555
+555 555 5555
+5555555555
+1 555 555 5555
+```
+
+- For this challenge you will be presented with a string such as 800-692-7753 or 8oo-six427676;laskdjf. Your job is to validate or reject the US phone number based on any combination of the formats provided above. The area code is required. If the country code is provided, you must confirm that the country code is 1. Return true if the string is a valid US phone number; otherwise return false.
+
+Solution 1:
+
+```javascript
+function telephoneCheck(str) {
+  var regex = /^(1\s?)?(\d{3}|\(\d{3}\))[\s\-]?(\d{3})[\s|-]?(\d{4})$/g;
+  var match = regex.test(str);
+  return match;
+}
+
+telephoneCheck("1(757) 622-7382");
+```
+
+SOlution 2: using libphonenumber of google github
+
+```javascript
+function telephoneCheck(str) {
+  var re = /^([+]?1[\s]?)?((?:[(](?:[2-9]1[02-9]|[2-9][02-8][0-9])[)][\s]?)|(?:(?:[2-9]1[02-9]|[2-9][02-8][0-9])[\s.-]?)){1}([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2}[\s.-]?){1}([0-9]{4}){1}$/;
+  return re.test(str);
+}
+telephoneCheck("555-555-5555");
+```
+
+## Cash Register
+
+- Design a cash register drawer function checkCashRegister() that accepts purchase price as the first argument (price), payment as the second argument (cash), and cash-in-drawer (cid) as the third argument.
+
+- cid is a 2D array listing available currency.
+
+- The checkCashRegister() function should always return an object with a status key and a change key.
+
+- Return {status: "INSUFFICIENT_FUNDS", change: []} if cash-in-drawer is less than the change due, or if you cannot return the exact change.
+
+- Return {status: "CLOSED", change: [...]} with cash-in-drawer as the value for the key change if it is equal to the change due.
+
+- Otherwise, return {status: "OPEN", change: [...]}, with the change due in coins and bills, sorted in highest to lowest order, as the value of the change key.
+
+```javascript
+Currency Unit	Amount
+Penny	$0.01 (PENNY)
+Nickel	$0.05 (NICKEL)
+Dime	$0.1 (DIME)
+Quarter	$0.25 (QUARTER)
+Dollar	$1 (ONE)
+Five Dollars	$5 (FIVE)
+Ten Dollars	$10 (TEN)
+Twenty Dollars	$20 (TWENTY)
+One-hundred Dollars	$100 (ONE HUNDRED)
+```
+
+- Solution 1:
+
+```javascript
+function checkCashRegister(price, cash, cid) {
+  var change = [];
+  var cashback = cash - price;
+  var prototype = [
+    { name: "PENNY", val: 0.01 },
+    { name: "NICKEL", val: 0.05 },
+    { name: "DIME", val: 0.1 },
+    { name: "QUARTER", val: 0.25 },
+    { name: "ONE", val: 1 },
+    { name: "FIVE", val: 5 },
+    { name: "TEN", val: 10 },
+    { name: "TWENTY", val: 20 },
+    { name: "ONE HUNDRED", val: 100 },
+  ];
+  cid = cid.reverse();
+  var register = cid.reduce(
+    function (acc, curr) {
+      acc.total += curr[1];
+      acc[curr[0]] = curr[1];
+      return acc;
+    },
+    { total: 0 }
+  );
+  if (register.total == cashback) {
+    change = { status: "CLOSED", change: cid };
+    return change;
+  }
+
+  if (register.total < cashback) {
+    change = { status: "INSUFFICIENT_FUNDS", change: [] };
+    return change;
+  }
+  for (let i of cid) {
+    if (cashback <= 0) {
+      break;
+    }
+    let item = prototype.find((res) => res.name == i[0]);
+    if (item) {
+      let result = false;
+      let total = 0;
+      while (register[item.name] > 0 && cashback >= item.val) {
+        register[item.name] -= item.val;
+        cashback = cashback - item.val;
+        total += item.val;
+        cashback = Math.round(cashback * 100) / 100;
+        result = true;
+      }
+
+      if (result) {
+        change.push([item.name, total]);
+      }
+    }
+  }
+
+  if (cashback > 0) {
+    change = { status: "INSUFFICIENT_FUNDS", change: [] };
+    return change;
+  }
+
+  if (change.length != prototype.length) {
+    change = { status: "OPEN", change: change };
+  }
+  return change;
+}
+
+checkCashRegister(19.5, 20, [
+  ["PENNY", 0.5],
+  ["NICKEL", 0],
+  ["DIME", 0],
+  ["QUARTER", 0],
+  ["ONE", 0],
+  ["FIVE", 0],
+  ["TEN", 0],
+  ["TWENTY", 0],
+  ["ONE HUNDRED", 0],
+]);
+```
+
+- Solution 2:
+
+```javascript
+// Create an array of objects which hold the denominations and their values
+var denom = [
+  { name: "ONE HUNDRED", val: 100.0 },
+  { name: "TWENTY", val: 20.0 },
+  { name: "TEN", val: 10.0 },
+  { name: "FIVE", val: 5.0 },
+  { name: "ONE", val: 1.0 },
+  { name: "QUARTER", val: 0.25 },
+  { name: "DIME", val: 0.1 },
+  { name: "NICKEL", val: 0.05 },
+  { name: "PENNY", val: 0.01 },
+];
+
+function checkCashRegister(price, cash, cid) {
+  var output = { status: null, change: [] };
+  var change = cash - price;
+
+  // Transform CID array into drawer object
+  var register = cid.reduce(
+    function (acc, curr) {
+      acc.total += curr[1];
+      acc[curr[0]] = curr[1];
+      return acc;
+    },
+    { total: 0 }
+  );
+
+  // Handle exact change
+  if (register.total === change) {
+    output.status = "CLOSED";
+    output.change = cid;
+    return output;
+  }
+
+  // Handle obvious insufficient funds
+  if (register.total < change) {
+    output.status = "INSUFFICIENT_FUNDS";
+    return output;
+  }
+
+  // Loop through the denomination array
+  var change_arr = denom.reduce(function (acc, curr) {
+    var value = 0;
+    // While there is still money of this type in the drawer
+    // And while the denomination is larger than the change remaining
+    while (register[curr.name] > 0 && change >= curr.val) {
+      change -= curr.val;
+      register[curr.name] -= curr.val;
+      value += curr.val;
+
+      // Round change to the nearest hundreth deals with precision errors
+      change = Math.round(change * 100) / 100;
+    }
+    // Add this denomination to the output only if any was used.
+    if (value > 0) {
+      acc.push([curr.name, value]);
+    }
+    return acc; // Return the current change_arr
+  }, []); // Initial value of empty array for reduce
+
+  // If there are no elements in change_arr or we have leftover change, return
+  // the string "Insufficient Funds"
+  if (change_arr.length < 1 || change > 0) {
+    output.status = "INSUFFICIENT_FUNDS";
+    return output;
+  }
+
+  // Here is your change, ma'am.
+  output.status = "OPEN";
+  output.change = change_arr;
+  return output;
+}
+
+// test here
+checkCashRegister(19.5, 20.0, [
+  ["PENNY", 1.01],
+  ["NICKEL", 2.05],
+  ["DIME", 3.1],
+  ["QUARTER", 4.25],
+  ["ONE", 90.0],
+  ["FIVE", 55.0],
+  ["TEN", 20.0],
+  ["TWENTY", 60.0],
+  ["ONE HUNDRED", 100.0],
+]);
+```
+
+See below for an example of a cash-in-drawer array:
+
 - References:
   - https://forum.freecodecamp.org/t/freecodecamp-challenge-guide-smallest-common-multiple/16075
 
@@ -1721,9 +2316,55 @@ GCD = Multiplication of common factor
   - If we subtract smaller number from larger (we reduce larger number), GCD doesn’t change. So if we keep subtracting repeatedly the larger of two, we end up with GCD.
   - Now instead of subtraction, if we divide smaller number, the algorithm stops when we find remainder 0.
 
-
 ### 16. Find currenrcy rates path
+
 - https://stackoverflow.com/questions/3372375/algorithm-to-determine-exchange-rate
+
+## Modulo operator (%)
+
+- Basically, operated on a number, it divides the number by the given divisor and gives the remainder of the division.
+  For Example,
+
+```javascript
+0 % 5 = 0 because 0 / 5 = 0 and the remainder is 0.
+
+2 % 5 = 2 because 2 / 5 = 0 and the remainder is 2
+
+4 % 5 = 4 because 4 / 5 = 0 and the remainder is 4
+
+5 % 5 = 0 because 5 / 5 = 1 and the remainder is 0
+
+7 % 5 = 2 because 7 / 5 = 1 and the remainder is 2
+
+9 % 5 = 4 because 9 / 5 = 1 and the remainder is 4
+
+10 % 5 = 0 because 10 / 5 = 2 and the remainder is 0
+```
+
+- But you must have noticed a pattern here.
+  As you might have noticed, the amazing modulo operator wraps over the LHS value when it just reaches multiples of the RHS value.
+  e.g. in our case, when LHS = 5, it wrapped over to 0
+  OR
+  when LHS = 10, it wrapped over to 0 again.
+
+Hence, we see the following pattern emerging
+
+```javascript
+     0 ⇔ 0
+     1 ⇔ 1
+     2 ⇔ 2
+     3 ⇔ 3
+     4 ⇔ 4
+     5 ⇔ 0
+     6 ⇔ 1
+     7 ⇔ 2
+     8 ⇔ 3
+     9 ⇔ 4
+    10 ⇔ 0
+```
+
+Hence, we conclude that using modulo operator, one can map a range of values to a range between [0 to DIVISOR - 1]. In our case, we mapped [5 - 9] between [0 - 4] or mapped [6 - 10] between [0 - 4].
+
 ## Machine learning algorithims
 
 - Linear regression
