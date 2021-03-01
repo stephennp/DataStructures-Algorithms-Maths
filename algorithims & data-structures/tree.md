@@ -10,6 +10,7 @@
   - file system
 
 # Binary Tree
+
 - It has at most 2 childrens
 - Every node in the tree can itself be thought of as a root node of a smaller distinct tree
 - Properties:
@@ -24,9 +25,72 @@
 - Examples: A binary tree with 6 nodes and 3 levels
   | Level | Max node on level | Max total nodes |
   |-------|-------------------|-----------------|
-  | 1     | 1                 | 1               |
-  | 2     | 2                 | 3               |
-  | 3     | 4                 | 7               |
-  | 4     | 8                 | 15              |
-  | 5     | 16                 | 31              |
-  | 6     | 32                 | 63              |
+  | 1 | 1 | 1 |
+  | 2 | 2 | 3 |
+  | 3 | 4 | 7 |
+  | 4 | 8 | 15 |
+  | 5 | 16 | 31 |
+  | 6 | 32 | 63 |
+
+  # Binary tree node
+
+- A node which contains a signle data item and pointers for the left and right child
+
+```csharp
+class BSTNode<T>
+{
+    public BSTNode(T value)
+    {
+        Data = value;
+    }
+    public T Data;
+    public BSTNode<T> Left;
+    public BSTNode<T> Right;
+}
+
+class Program{
+    static void Main(){
+        var root = new BSTNode<string>("root");
+        root.Left = new BSTNode<string>("left")
+        root.Right = new BSTNode<string>("right")
+    }
+}
+```
+
+# Binary search tree
+
+- A binary tree where nodes:
+  - With `lessor` values are placed to the `left of the root`
+  - With `equal or greater` values are placed `to the right`
+- Examples: 12 -> 14 -> 7 -> 7 -> 18 -> 3
+
+```
+      12
+  7       14
+3   7       18
+
+```
+
+# Complexity
+
+- Average: O(logn)
+- Worst: O(n)
+
+# Balance tree
+
+```
+      12
+  7       14
+3   7       18
+
+```
+
+# Unbalance tree
+
+```
+      12
+         14
+           18
+             20
+
+```
