@@ -8,7 +8,6 @@
 - Examples:
   - reporting structure
   - file system
-
 # Binary Tree
 
 - It has at most 2 childrens
@@ -32,7 +31,7 @@
   | 5 | 16 | 31 |
   | 6 | 32 | 63 |
 
-  # Binary tree node
+# Binary tree node
 
 - A node which contains a signle data item and pointers for the left and right child
 
@@ -94,3 +93,26 @@ class Program{
              20
 
 ```
+# Data structures for tree traversal
+- `Depth-first` search is easily implemented via a `stack`, including recursively (via the call stack)
+- `Breadth-first` search is easily implemented via a `queue`, including corecursively
+# Depth-first search of binary tree
+- These searches are referred to as depth-first search (DFS), since the search tree is `deepened as much as possible on each child` before going to the next sibling. For a binary tree, they are defined as access operations at each node, starting with the current node, whose algorithm is as follows:
+- The general recursive pattern for traversing a binary tree is this:
+
+  - Go down one level to the recursive argument N. If N exists (is non-empty) execute the following three operations in a certain order:[5]
+    - L: Recursively traverse N's left subtree.
+    - R: Recursively traverse N's right subtree.
+    - N: Access (visit) the current node N itself.
+  - Return by going up one level and arriving at the parent node of N.
+- There are three methods (patterns) at which position of the parcours (traversal) relative to the node (in the figure: red, green, or blue) the visit (access) of the node shall take place. The choice of exactly one color determines exactly one visit of a node as described below. Access at all three colors results in a threefold visit of the same node yielding the “all-order” sequentialisation:
+- Ref: https://en.wikipedia.org/wiki/Tree_traversal#Pre-order,_NLR
+# Tree Traversals
+
+## Pre-order
+- The node is visited before its children
+  - Process the current value -> Visit the left child -> Visit the right child
+## In-order
+- The left child is visited before the node, then the right child
+## Post-order
+- The left and right children are visited before the node
