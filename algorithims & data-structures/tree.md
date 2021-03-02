@@ -8,6 +8,7 @@
 - Examples:
   - reporting structure
   - file system
+
 # Binary Tree
 
 - It has at most 2 childrens
@@ -93,10 +94,14 @@ class Program{
              20
 
 ```
+
 # Data structures for tree traversal
+
 - `Depth-first` search is easily implemented via a `stack`, including recursively (via the call stack)
 - `Breadth-first` search is easily implemented via a `queue`, including corecursively
+
 # Depth-first search of binary tree
+
 - These searches are referred to as depth-first search (DFS), since the search tree is `deepened as much as possible on each child` before going to the next sibling. For a binary tree, they are defined as access operations at each node, starting with the current node, whose algorithm is as follows:
 - The general recursive pattern for traversing a binary tree is this:
 
@@ -105,14 +110,214 @@ class Program{
     - R: Recursively traverse N's right subtree.
     - N: Access (visit) the current node N itself.
   - Return by going up one level and arriving at the parent node of N.
+
 - There are three methods (patterns) at which position of the parcours (traversal) relative to the node (in the figure: red, green, or blue) the visit (access) of the node shall take place. The choice of exactly one color determines exactly one visit of a node as described below. Access at all three colors results in a threefold visit of the same node yielding the “all-order” sequentialisation:
 - Ref: https://en.wikipedia.org/wiki/Tree_traversal#Pre-order,_NLR
+
 # Tree Traversals
+- Average case : O(n)
+- Worst case : O(n)
+```csharp
+class BinaryTreeNode<TNode> {
+  public BinaryTreeNode<TNode> Left { get; set; }
+  public BinaryTreeNode<TNode> Right { get; set; }
+  public TNode Value { get; set; }
+}
+
+class BinaryTree<T> {
+  public BinaryTreeNode<T> Root { get; set; }
+
+  public void Add(T value)
+  {
+    if(Root == null)
+    {
+      Root = new BinaryTreeNode<T>(value);
+    }
+    else {
+      AddTo(Root, value);
+    }
+  }
+
+  public void AddTo(TNode node, T value)
+  {
+    if (node.Value.CompareTo(value) < 0)
+    {
+      if(node.Left == null)
+      {
+        node.Left = new BinaryTreeNode<T>(value);
+      }
+      else
+      {
+        AddTo(node.Left, value);
+      }
+    }
+    else
+    {
+      if(node.Right == null)
+      {
+        node.Right = new BinaryTreeNode<TNode>(node);
+      }
+      else
+      {
+        AddTo(node.Right, value);
+      }
+    }
+  }
+}
+```
 
 ## Pre-order
+
 - The node is visited before its children
-  - Process the current value -> Visit the left child -> Visit the right child
+- Process the current value -> Visit the left child -> Visit the right child
+- The pre-order traversal is a topologically sorted one, because `a parent node is processed before any of its child nodes is done`.
+
+```
+      12
+  7       14
+3   7       18
+
+1. Access the data part of the current node (in the figure: position red).
+2. Traverse the left subtree by recursively calling the pre-order function.
+3. Traverse the right subtree by recursively calling the pre-order function.
+
+Steps: 12 -> 7 -> 3 -> 7 -> 14 -> 18
+```
+
+```csharp
+class BinaryTree<TNode> {
+
+  public void PreOrderTraversal(Action action)
+  {
+    PreOrderTraversal(action, Root)
+  }
+  public void PreOrderTraversal(Action action, TNode node)
+  {
+    if(node != null)
+    {
+      action(node.Value);
+      PreOrderTraversal(node.Left);
+      PreOrderTraversal(node.Right);
+    }
+  }
+}
+```
+
+- Copy a tree
+
+```csharp
+class Program {
+  static void Main(){
+  //          10
+  //      5        20
+  //    4   6    15
+  //           12
+  //             13
+  //               14
+  BinaryTree<int> expected = new BinaryTree<int>();
+  expected.Add(10);
+  expected.Add(5);
+  expected.Add(4);
+  expected.Add(6);
+
+  expected.Add(20);
+  expected.Add(15);
+  expected.Add(12);
+  expected.Add(13);
+  expected.Add(14);
+
+  BinaryTree<int> actual = new BinaryTree<int>();
+  expected.PreOrderTraversal((value) => actual.Add(value));
+  }
+}
+```
 ## In-order
+
 - The left child is visited before the node, then the right child
+- Visit the left child ->  Process the current value -> Visit the right child
+```
+      12
+  7       14
+3   7       18
+
+1. Traverse the left subtree by recursively calling the in-order function.
+2. Access the data part of the current node (in the figure: position green).
+3. Traverse the right subtree by recursively calling the in-order function.
+
+Steps: 3 -> 7 -> 7 -> 12 -> 14 -> 18
+```
+
+```csharp
+class BinaryTree<TNode> {
+
+  public void InOrderTraversal(Action action)
+  {
+    InOrderTraversal(action, Root)
+  }
+  public void InOrderTraversal(Action action, TNode node)
+  {
+    if(node != null)
+    {
+      PreOrderTraversal(node.Left);
+      action(node.Value);
+      PreOrderTraversal(node.Right);
+    }
+  }
+}
+```
 ## Post-order
+
 - The left and right children are visited before the node
+- Visit the left child ->  Visit the right child -> Process the current value
+```
+      12
+  7       14
+3   7       18
+
+1. Traverse the left subtree by recursively calling the post-order function.
+2. Traverse the right subtree by recursively calling the post-order function.
+3. Access the data part of the current node (in the figure: position blue).
+
+Steps: 3 -> 7 -> 7 -> 18 -> 14 -> 12
+```
+
+```csharp
+class BinaryTree<TNode> {
+
+  public void PostOrderTraversal(Action action)
+  {
+    PostOrderTraversal(action, Root)
+  }
+  public void PostOrderTraversal(Action action, TNode node)
+  {
+    PostOrderTraversal(node.Left);
+    PostOrderTraversal(node.Right);
+    action(node.Value);
+  }
+}
+```
+
+# Search
+```csharp
+public T FindWithParent(T value, out BinaryTree<T> Parent)
+{
+  var current = Root;
+  var parent = null;
+  while(current != null)
+  {
+    if(current.CompareTo(value) < 0)
+    {
+      parent 
+    }
+    else if(current.CompareTo(value) > 0)
+    {
+
+    }
+    else
+    {
+
+    }
+  }
+  return current;
+}
+```
