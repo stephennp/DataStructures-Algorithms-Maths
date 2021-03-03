@@ -115,8 +115,10 @@ class Program{
 - Ref: https://en.wikipedia.org/wiki/Tree_traversal#Pre-order,_NLR
 
 # Tree Traversals
+
 - Average case : O(n)
 - Worst case : O(n)
+
 ```csharp
 class BinaryTreeNode<TNode> {
   public BinaryTreeNode<TNode> Left { get; set; }
@@ -231,10 +233,12 @@ class Program {
   }
 }
 ```
+
 ## In-order
 
 - The left child is visited before the node, then the right child
-- Visit the left child ->  Process the current value -> Visit the right child
+- Visit the left child -> Process the current value -> Visit the right child
+
 ```
       12
   7       14
@@ -265,10 +269,12 @@ class BinaryTree<TNode> {
   }
 }
 ```
+
 ## Post-order
 
 - The left and right children are visited before the node
-- Visit the left child ->  Visit the right child -> Process the current value
+- Visit the left child -> Visit the right child -> Process the current value
+
 ```
       12
   7       14
@@ -298,6 +304,10 @@ class BinaryTree<TNode> {
 ```
 
 # Search
+
+- Average : O(n)
+- Worst : O(n)
+
 ```csharp
 public T FindWithParent(T value, out BinaryTree<T> Parent)
 {
@@ -305,19 +315,151 @@ public T FindWithParent(T value, out BinaryTree<T> Parent)
   var parent = null;
   while(current != null)
   {
-    if(current.CompareTo(value) < 0)
+    if(current.CompareTo(value) > 0)
     {
-      parent 
+      // if the value is less than current, go left.
+      parent = current;
+      current = current.Left;
     }
-    else if(current.CompareTo(value) > 0)
+    else if(current.CompareTo(value) < 0)
     {
-
+      // if the value is more than current, go right.
+      parent = current;
+      current = current.Right;
     }
     else
     {
-
+      break;
     }
   }
   return current;
 }
 ```
+
+# Remove
+
+- There are 3 cases:
+  - No children (Leaf)
+  - 1 children
+  - 2 childrens:
+    - Find the node
+    - Go to the right child
+    - Go to the left-most child
+    - Replace deleted node with successor
+    - Move the successor's child up
+- Complexity:
+  - Average: O(log n)
+  - Worst: O(n)
+- Steps
+  - Case 1: If current has no right child, then current's left replaces current
+  - Case 2: If current's right child has no left child, then current's right child replaces current
+  - Case 3: If current's right child has a left child, replace current with current's right child's left-most child
+
+```csharp
+// cases: 
+// 1. Remove leaf
+// 2. Remove root one child on left
+// 3. Remove root one child on right
+// 4. Remove root two childs
+// 5. Remove one child left
+// 6. Remove one child right
+// 7. Remove two childs
+// 8. Remove root only
+void Remove(T value)
+{
+  var current = FindWithParent(value,Root);
+  if(current == null)
+  {
+    return;
+  }
+
+  // Remove leaf or one-child node
+
+  // Case 1: If current has no right child
+  // then current's left replaces current
+  // There are only left side sub-tree
+  if(current.Right == null)
+  {
+    // remove root still having left child
+    if(parent == null)
+    {
+      Root = current.Left;
+    }
+    // either leaf or one child node
+    else
+    {
+      var result = parent.CompareTo(current.Value);
+      // parent value greater than current value
+      if(result > 0)
+      {
+        parent.Left = current.Left;
+      } 
+      // parent value less than current value
+      else
+      {
+        parent.Right = current.Left;
+      }
+    }
+  }
+  else if(current.Left == null)
+  {
+    // ...
+    // executing like above only except:
+    else
+    {
+       var result = parent.CompareTo(current.Value);
+      // parent value greater than current value
+      if(result > 0)
+      {
+        parent.Left = current.Right;
+      } 
+      // parent value less than current value
+      else
+      {
+        parent.Right = current.Right;
+      }
+    }
+  }
+  else if(current.Right.Left == null)
+  {
+
+  }
+  // Remove two-childrens node
+  else{
+    var leftMost = current.Right.Left;
+    var parentLeftMost = current.Right
+
+    while(leftMost.Left != null)
+    {
+      parentLeftMost = leftMost;
+      leftMost = leftMost.Left;
+    }
+    parentLeftMost.Left = leftMost.Right;
+    leftMost.Left = current.Left;
+    leftMost.Right = current.Right;
+
+    if(parent == null)
+    {
+      Root = leftMost
+    }
+    else
+    {
+       var result = parent.CompareTo(current.Value);
+      // parent value greater than current value
+      if(result > 0)
+      {
+        parent.Left = leftMost;
+      } 
+      // parent value less than current value
+      else
+      {
+        parent.Right = leftMost;
+      }
+    }
+  }
+}
+```
+# Compare SortedLinkedList to BinaryTree
+- Insert 25.000 items
+  - SortedLinkedList : took 32 seconds to complete
+  - BinaryTree : tool o seconds to complete
