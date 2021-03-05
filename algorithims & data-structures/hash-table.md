@@ -26,9 +26,33 @@ headers["content-type"] = "image/png";
 - An associative array container that provides `O(1) insert, delete and search` operations.
 
 # Hash table
+
+## Hash Collision
+
+- When multiple distinct keys would be inserted at the same hash table index.
+
+## Separate Chaining
+
+- Collisions in a hash table are chained together into a linked list whose root node is the hash table array entry
+
+## Fill Factor
+
+- The percentage of capacity representing the maximum number of entries before the table will grow. E.g., 0.80
+
+## Growth Factor
+
+- The multiple to increase the capacity of the hash table when the fill factor has been exceeded. E.g., 1.50
+
+## Hash Table Growth
+
+- Use the fill factor to determine if growth is needed
+- Use the growth factor to allocate a larger array
+- Determine the new index for the existing items in the hash table
+- Update the hash table to use the new array
+
 ```csharp
 class HashTableNodePair<TKey,TValue>{
-  
+
   public HashTableNodePair(TKey key, TValue value)
   {
     Key = key;
@@ -37,6 +61,232 @@ class HashTableNodePair<TKey,TValue>{
   public TKey Key {get;set;}
   public TValue Value {get;set;}
 }
+class HashTableArrayNode<TKey,TValue>
+{
+   LinkedList<HashTableNodePair<TKey,TValue>> _items;
+
+   void Add(TKey key, TValue value) {
+     if(_items == null)
+     {
+       _items = new LinkedList<HashTableNodePair<TKey,TValue>>();
+     }
+     else
+     {
+       for(var item in _items)
+       {
+         if(item.Key.Equals(key))
+         {
+           throw new ArgumentExpcetion("The collection already contains the key");
+         }
+       }
+       _items.AddHead(new HasTableNodePair<TKey,TValue>(key, value));
+     }
+   }
+
+   void Update(){
+     bool updated = false;
+     for(var item in _items)
+     {
+       if(item.Key.Equals(key))
+       {
+         item.Value = value;
+         updated = true;
+         break;
+       }
+     }
+     if(!updated)
+     {
+        throw new ArgumentExpcetion("The collection already contains the key");
+     }
+   }
+
+   void Remove(){
+       bool removed = false;
+            if (_items != null)
+            {
+                HashTableNodePair<TKey, TValue> found = null;
+                foreach(HashTableNodePair<TKey, TValue> current in _items)
+                {
+                    if(current.Key.Equals(key))
+                    {
+                        found = current;
+                        break;
+                    }
+                }
+
+                if(found != null)
+                {
+                    _items.Remove(found);
+                    removed = true;
+                }
+            }
+
+            return removed;
+   }
+}
+class HashTableArray<TKey,TValue>
+{
+  HashTableArrayNode<TKey,TValue>[] _array;
+
+  public HashTableArray(int capacity)
+  {
+    _array = new HashTableArrayNode<TKey,TValue>[capacity]();
+    for(int i = 0; i< capacity>;i++)
+    {
+      _array[i] = = new HashTableArrayNode<TKey, TValue>();
+    }
+  }
+
+  /// <summary>
+  /// Finds and returns the value for the specified key.
+  /// </summary>
+  /// <param name="key">The key whose value is sought</param>
+  /// <param name="value">The value associated with the specified key</param>
+  /// <returns>True if the value was found, false otherwise</returns>
+  public bool TryGetValue(TKey key, out TValue value)
+  {
+    return _array[GetIndex(key)].TryGetValue(key, out value);
+  }
+
+  public void Add(TKey key, TValue value)
+  {
+    _array[GetIndex(key)].Add(key,value);
+  }
+
+  public void Update(TKey key, TValue value)
+  {
+    _array[GetIndex(key)].Update(key,value);
+  }
+
+  public void Remove(TKey key)
+  {
+    _array[GetIndex(key)].Remove(key,value);
+  }
+
+  // Maps a key to the array index based on hash code
+  private int GetIndex(TKey key)
+  {
+    return Math.Abs(key.GetHashCode() % Capacity);
+  }
+
+  /// <summary>
+  /// The capacity of the hash table array
+  /// </summary>
+  public int Capacity
+  {
+    get
+    {
+      return _array.Length;
+    }
+  }
+
+}
+
+class HashTable<TKey,TValue>
+{
+  // If the array exceeds this fill percentage it will grow
+  // In this example the fill factor is the total number of items
+  // regardless of whether they are collisions or not.
+  int _fillFactor = 0.75;
+
+  // the number of items in the hash table
+  int _count;
+
+  // the maximum number of items to store before growing.
+  // This is just a cached value of the fill factor calculation
+  int _maxItemsAtCurrentSize;
+
+  HashTableArray<TKey,Tvalue> _array;
+
+  /// <summary>
+  /// Constructs a hash table with the default capacity
+  /// </summary>
+  public HashTable() : this(1000)
+  {
+  }
+
+  public HashTable(int initialCapacity){
+    if(initialCapacity < 1)
+    {
+      throw new ArgumentOutOfRangeException("initialCapacity");
+    }
+
+     _array = new HashTableArray<TKey, TValue>(initialCapacity);
+
+    // when the count exceeds this value, the next Add will cause the
+    // array to grow
+    _maxItemsAtCurrentSize = (int)(initialCapacity * _fillFactor) + 1;
+  }
+
+  void Add(TKey key, TValue value)
+  {
+    // if we are at capacity, the array needs to grow
+    if(count >= _maxItemsAtCurrentSize)
+    {
+      // allocate a larger array
+      var largeArray = new HashTableArray<TKey, TValue>(_array.Capacity * 2);
+
+      // and re-add each item to the new array
+      for(var item in _array)
+      {
+        largeArray.Add(item.Key, item.Value);
+      }
+       // the larger array is now the hash table storage
+      _array = largeArray;
+
+      // update the new max items cached value
+      _maxItemsAtCurrentSize = (int)(_array.Capacity * _fillFactor) + 1;
+    }
+
+     _array.Add(key, value);
+    _count++;
+  }
+
+  /// <summary>
+  /// Removes the item from the hash table whose key matches
+  /// the specified key.
+  /// </summary>
+  /// <param name="key">The key of the item to remove</param>
+  /// <returns>True if the item was removed, false otherwise.</returns>
+  public bool Remove(TKey key)
+  {
+    bool removed = _array.Remove(key);
+    if (removed)
+    {
+      _count--;
+    }
+
+    return removed;
+  }
+
+  /// <summary>
+  /// The number of items currently in the hash table
+  /// </summary>
+  public int Count
+  {
+    get
+    {
+      return _count;
+    }
+  }
+
+  public TValue this[TKey key]
+  {
+    get{
+      TValue value;
+      if(!_arry.TryGetValue(key,out value))
+      {
+        throw new ArgumentException("key");
+      }
+      return value
+    }
+    set{
+      _array.Update(key,value);
+    }
+  }
+}
+
+
 ```
 
 # Hash Function
@@ -254,7 +504,9 @@ public ulong Dbj2Hash(string input)
 f      o       o
 177675 5863386 193491849
 ```
+
 ## Hash Function Comparison
+
 ```
 Name      Output Size Stable Uniform Secure
 Additive      32        YES   NO      NO
@@ -264,4 +516,80 @@ MD5           128       YES   YES     NO*
 SHA-1         160       YES   YES     NO*
 SHA-2         224/384   YES   YES     NO*
 SHA-2         256-512   YES   YES     YES
+```
+
+# Examples
+
+- Using state-level caching for contacts finding with state
+  - Find with a first name of a user in 25k users : took 51 ms
+  - Find with a first name of a user and a state : took 1.7 ms with state caching using hash table structure
+    - Note: it takes more memory to store them in hash table
+
+```csharp
+public Contact Add(Contact contact)
+{
+  int id = contact.ID.HasValue ? contact.ID.Value : nextId++;
+  nextId = Math.Max(nextId, id + 1);
+
+  Contact withId = Contact.CreateWithId(id, contact);
+
+  Log.Verbose("Add: adding new contact with ID {0} ({1} {2})", withId.ID, withId.FirstName, withId.LastName);
+  contacts.Add(withId);
+
+  // Add to the state-level cache.
+  // If the state does not currently exist in the cache - add the binary tree
+  if (!stateCache.ContainsKey(withId.State))
+  {
+    stateCache.Add(withId.State, new BinaryTree<Contact>());
+  }
+
+  // now we know the state exists so add the contact
+  stateCache[withId.State].Add(withId);
+
+  Log.Verbose("Add: complete ({0})", withId.ID);
+
+  return withId;
+  }
+
+  public bool Remove(Contact contact, out Contact removed)
+  {
+    if (contacts.Remove(contact))
+    {
+      if (stateCache.ContainsKey(contact.State))
+      {
+        // remove from the state-level cache
+        stateCache[contact.State].Remove(contact);
+      }
+
+      Log.Info("Remove: removed contact {0} ({1} {2})", contact.ID.Value, contact.FirstName, contact.LastName);
+      removed = contact;
+      return true;
+    }
+
+    Log.Warning("Remove: Contact not found.  No action taken.");
+    removed = default;
+    return false;
+  }
+   public IEnumerable<Contact> Search(ContactFieldFilter filter)
+   {
+    Log.Verbose("Searching for contacts with filter: {0}", filter);
+
+    // If the file has a state component
+    // get the items from the cache instead of checking everything
+    if (filter.State.HasValue)
+    {
+      if (stateCache.ContainsKey(filter.State.Value))
+      {
+        return filter.Apply(stateCache[filter.State.Value]);
+      }
+       else
+      {
+         return new SortedList<Contact>();
+      }
+    }
+    else
+    {
+      return filter.Apply(this.Contacts);
+    }
+   }
 ```
