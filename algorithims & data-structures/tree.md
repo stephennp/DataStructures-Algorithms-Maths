@@ -5,6 +5,7 @@
   - 0 or 1 parent node
   - 0-N child nodes(binary,trinary,k-ary)
   - leaf nodes have no children
+-  Insert, remove, and search operations are `O(log n)` average case
 - Examples:
   - reporting structure
   - file system
@@ -86,11 +87,34 @@ class Program{
 ```
 
 # Unbalance tree
-
+- A tree whose left and right children have uneven heights.
+- A fully unbalanced binary tree is just a linked list with `O(n)` algorithmic complexity
 ```
       12
          14
            18
+             20
+
+```
+- 
+# Height
+- The maximum number of edges between the root and leaf nodes.
+```
+      12
+                  ----> 1
+  7       14     
+                  ----> 2 
+3   7       18    
+
+```
+
+```
+      12 
+                  ----> 1
+         14 
+                  ----> 2
+           18
+                  ----> 3
              20
 
 ```

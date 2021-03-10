@@ -155,6 +155,20 @@ sort(originalArray) {
 - Compare: Compare the individual items
 - Merge: Merge the items into a sorted array
 
+
+## Complexity
+
+- Best: `O(n log n)` comparisons and swaps
+- Average: `O(n log n)` comparisons and swaps
+- Worst: `O(n log n)` comparisons and swaps
+- Memory: `O(n)`
+
+## Properties
+- Merge sort has uniform algorithmic complexity in the worse, average, and best case
+- Divide and Conquer: Reduces the problem down to the most basic form
+- Memory Requirements: Requires `O(n)` additional memory
+- Stable: Equal items retain their relative position
+
 ```csharp
 // 1 3 5 1 - > (4 swap) + (1 recursion)
 // 1 3   5 1 - > 1 3 (1 swap)  1 5 (1 swap) + (1 recursion)
@@ -206,24 +220,23 @@ void Merge(int[] items, int[] left, int[] right){
 }
 ```
 
-- Merge sort has uniform algorithmic complexity in the worse, average, and best case
-- Divide and Conquer: Reduces the problem down to the most basic form
-- Memory Requirements: Requires `O(n)` additional memory
-- Stable: Equal items retain their relative position
-
-## Complexity
-
-- Best: `O(n log n)` comparisons and swaps
-- Average: `O(n log n)` comparisons and swaps
-- Worst: `O(n log n)` comparisons and swaps
-- Memory: `O(n)`
-
 # Quick sort
 
 - Pivot: Pick the pivot value in the array
 - Partition: Reorder the elements around the pivot point
 - Repeat: Repeat for each partition
 
+## Complexity
+- Best: `O(n log n)` comparisons and swaps
+- Average: `O(n log n)` comparisons and swaps
+- Worst: `O(n^2)` comparisons and swaps
+- Memory: `O(log n)`
+
+## Properties
+- Divide and Conquer: Reduces the problem down to the most basic form
+- In-place: Requires only `O(log n)` additional memory
+- Optimizable: There exist many optimizations to improve performance
+- Quicksort is the `default sorting algorithm` for many programming languages
 ## Pivot value
 
 - A value in the array where all the values to the left of the pivot are less than (or equal to) the pivot value, and all the values to the right are greater.
@@ -233,26 +246,80 @@ void Merge(int[] items, int[] left, int[] right){
 - Selecting a Pivot Value
   - Select a random array item
   - Select the first or last array item
-    - Requires `O(n2)` operations in the pre-sorted case
+    - Requires `O(n^2)` operations in the pre-sorted case
   - Select the median of the first, last, and middle items
 
 ```csharp
+// 10 20 30 90 80 85 12 70 
+// compare to 70(pivot):
+// 10 < 70 -> no changed -> i =1
+// 80 swap 30 -> 10 30 80 90 40 50 70   -> i = 2  
+// 80 swap 40 -> 10 30 40 90 80 50 70 -> i = 3
+// 90 swap 50 -> 10 30 40 50 80 90 70 -> i = 4
+// final -> out of loop: 70 swap 50 -> 10 30 40 50 70 90 80
 void quickSort(int[] items, int left, int right){
 
   if(left < right)
+  {
+    var pivot = partition(items,left,right);
+    // divide and conquer left items without pivot index
+    quickSort(items, left, pivot -1);
+
+    // divide and conquer right items without pivot index
+    quickSort(items, pivot + 1,right);
+  }
 }
 
-void partition()
+int partition(int[] items, int left, int right)
 {
+  // get random pivot
+  var newPivot = items.Range(left,right);
 
+  // swap random pivot to last item index of array
+  swap(items,newPivot,right);
+
+  var storedIndex = left;
+
+  // compare and swap
+  for(int i = left; i < items.length; i++)
+  {
+    if(items[i] < newPivot)
+    {
+      swap(items,i,storedIndex);
+      storedIndex++;
+    }
+  }
+  // finallly swap and get the new pivot index
+  swap(items,right,storedIndex)
+  return storedIndex;
 }
-5 /2 = 2
-5 - 2 = 3 
- 3/ 2 = 1
- 3 - 1 = 2
- 1 /2 = 0
- 2 / 2 = 1
- 2 - 1 = 1
 
- 
+```
+
+# Comparison
+```
+Executing: Bubble Sort
+       Length: 20000
+  Comparisons: 395540222
+        Swaps: 100128488
+      Seconds: 14.1925947
+------------------
+Executing: Insertion Sort
+       Length: 20000
+  Comparisons: 100168467
+        Swaps: 100128488
+      Seconds: 4.2475366
+------------------
+Executing: Merge Sort
+       Length: 20000
+  Comparisons: 260844
+        Swaps: 287232
+      Seconds: 0.0143705
+------------------
+Executing: Quick Sort
+       Length: 20000
+  Comparisons: 332064
+        Swaps: 180894
+      Seconds: 0.0116324
+------------------
 ```
