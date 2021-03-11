@@ -5,7 +5,7 @@
   - 0 or 1 parent node
   - 0-N child nodes(binary,trinary,k-ary)
   - leaf nodes have no children
--  Insert, remove, and search operations are `O(log n)` average case
+- Insert, remove, and search operations are `O(log n)` average case
 - Examples:
   - reporting structure
   - file system
@@ -77,7 +77,49 @@ class Program{
 - Average: O(logn)
 - Worst: O(n)
 
+# Unbalance tree
+
+- A tree whose left and right children have uneven heights.
+- A fully unbalanced binary tree is just a linked list with `O(n)` algorithmic complexity
+- Complexity: `O(n)`
+
+```
+      12
+         14
+           18
+             20
+
+```
+
+# Height
+
+- The maximum number of edges between the root and leaf nodes.
+
+```
+      12
+                  ----> 1
+  7       14
+                  ----> 2
+3   7       18
+
+```
+
+```
+      12
+                  ----> 1
+         14
+                  ----> 2
+           18
+                  ----> 3
+             20
+
+```
+
 # Balance tree
+
+- A binary search tree whose maximum height is minimized
+- If any two sibling subtrees do not differ in height by more than one level. In other words,any two leaves should not have a difference in depth that is more than one level
+- Complexity: `O(logn)`
 
 ```
       12
@@ -86,37 +128,75 @@ class Program{
 
 ```
 
-# Unbalance tree
-- A tree whose left and right children have uneven heights.
-- A fully unbalanced binary tree is just a linked list with `O(n)` algorithmic complexity
-```
-      12
-         14
-           18
-             20
+# Balance factor
+
+- The difference between the height of the left and right sub-trees.
 
 ```
-- 
-# Height
-- The maximum number of edges between the root and leaf nodes.
-```
-      12
-                  ----> 1
-  7       14     
-                  ----> 2 
-3   7       18    
+      4
 
+Left Height: 0
+Right Height: 0
+Balance Factor: 0
 ```
 
 ```
-      12 
-                  ----> 1
-         14 
-                  ----> 2
-           18
-                  ----> 3
-             20
+      4
+  2
 
+Left Height: 1
+Right Height: 0
+Balance Factor: -1
+```
+
+```
+      4
+          5
+              6
+
+Left Height: 0
+Right Height: 2
+Balance Factor: 2
+```
+
+# Heavy
+
+- The state when the balance factor of a node differs by more than one.
+
+```
+      4
+    2
+  1
+
+Left Height: 2
+Right Height: 0
+Balance Factor: -2
+```
+
+```
+      4
+    2   5
+  1       6
+
+Left Height: 2
+Right Height: 2
+Balance Factor: 0
+```
+
+# Diff from balance and unbalance tree
+
+```
+Balance tree: The difference between the left and right subtrees is not more than 1 level.
+        4
+    2      5
+  1   3  4   6
+                8
+
+Unbalance tree: The difference between the left and right subtrees is more than 1 level in height.
+        4
+    2      5
+         4   6
+                8
 ```
 
 # Data structures for tree traversal
@@ -380,7 +460,7 @@ public T FindWithParent(T value, out BinaryTree<T> Parent)
   - Case 3: If current's right child has a left child, replace current with current's right child's left-most child
 
 ```csharp
-// cases: 
+// cases:
 // 1. Remove leaf
 // 2. Remove root one child on left
 // 3. Remove root one child on right
@@ -417,7 +497,7 @@ void Remove(T value)
       if(result > 0)
       {
         parent.Left = current.Left;
-      } 
+      }
       // parent value less than current value
       else
       {
@@ -436,7 +516,7 @@ void Remove(T value)
       if(result > 0)
       {
         parent.Left = current.Right;
-      } 
+      }
       // parent value less than current value
       else
       {
@@ -473,7 +553,7 @@ void Remove(T value)
       if(result > 0)
       {
         parent.Left = leftMost;
-      } 
+      }
       // parent value less than current value
       else
       {
@@ -483,7 +563,186 @@ void Remove(T value)
   }
 }
 ```
+
 # Compare SortedLinkedList to BinaryTree
+
 - Insert 25.000 items
   - SortedLinkedList : took 32 seconds to complete
   - BinaryTree : tool o seconds to complete
+
+# AVL Tree (Self Balancing Tree)
+
+- A self-balancing binary search tree. Named after it’s inventors Georgy Adelson-Velsky and Evgenii Landis
+- The tree is balanced as nodes are added or removed from the tree.
+
+```csharp
+class AVLTreeNode<TNode>{
+  AVLTreeNode<TNode> Left;
+  AVLTreeNode<TNode> Right;
+  TNode Value;
+
+  public int LeftHeight{
+    get {
+      return GetMaxHeight(Left);
+    }
+  }
+
+  public int RightHeight{
+    get {
+      return GetMaxHeight(Right);
+    }
+  }
+
+  public int BalanceFactor {
+    get {
+      return RightHeight - LeftHeight;
+    }
+  }
+
+  //       5
+  //    4     6
+  //  3   5      7
+  // 2             8
+  //1
+  public int GetMaxHeight(AVLTreeNode<TNode> node) {
+    if(node == null)
+    {
+      return 0;
+    }
+    return 1 + Math.Max(GetMaxHeight(node.Left), GetMaxHeight(node.Right));
+  }
+
+  public TreeState State {
+    get {
+
+      if (RightHeight - LeftHeight > 1)
+      {
+        return TreeState.RightHeavy;
+      }
+      if (LeftHeight - RightHeight > 1)
+      {
+        return TreeState.LeftHeavy;
+      }
+      return TreeState.Balanced;
+    }
+  }
+
+  void Balance(){
+
+    if(State.RightHeavy)
+    {
+        if(Right!= null && Right.BalanceFactor <0 )
+        {
+          LeftRightRotation();
+        }
+        else{
+          LeftRotation();
+        }
+    }
+
+    if(State.LeftHeavy)
+    {
+      if(Left != null && Left.BalanceFactor > 0)
+      {
+        RightLeftRotation();
+      }
+      else
+      {
+        RightRotation();
+      }
+    }    
+  }
+
+  enum TreeState{
+    Balanced,
+    RightHeavy,
+    LeftHeavy
+  }
+
+}
+
+```
+
+## Left rotation
+
+- Algorithm to balance a right-heavy tree by rotating nodes to the left.
+- Steps:
+  - Right child becomes the new root
+  - Left child of the new root is assigned to right child of the old root
+  - Previous root becomes the new root’s left child
+
+```
+      1
+        3
+      2   4
+1. Right child becomes the new root:
+  1      3
+       2   4
+2. Left child of the new root is assigned to right child of the old root:
+    1        3
+      2        4
+3. Previous root becomes the new root’s left child:
+    3
+  1    4
+    2
+```
+
+```csharp
+//			5
+//		3		   7
+//  2   4   6  8
+//					    9
+//					     10
+
+void LeftRotation() {
+
+  var newRoot = root.Right;
+  root.right = newRoot.left;
+
+  newRoot.left = root;
+}
+```
+
+## Right rotation
+- Algorithm to balance a left-heavy tree by rotating nodes to the right
+- Steps:
+  - 1 Left child becomes the new root
+  - 2 Right child of the new root is assigned to left child of the old root
+  - 3 Previous root becomes the new root’s right child
+```
+      4
+    2
+  1   3
+
+  ->
+
+      2
+    1    4
+       3
+    
+```
+```csharp
+void RightRotation(){
+  var oldRoot = Left;
+  var newRoot = ReplaceRoot(Left);
+  oldRoot.Left = newRoot.Right;
+  newRoot.Right = oldRoot;
+}
+```
+## Left-right rotation
+- Right rotation the right child
+- Left rotation the root
+```csharp
+void LeftRightRotation(){
+  RightRotation(Right)
+
+}
+```
+## Right-left rotation
+- Left rotate the left child
+- Right rotate the root
+```csharp
+void RightLeftRotation(){
+
+}
+```
