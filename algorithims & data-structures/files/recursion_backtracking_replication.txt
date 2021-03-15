@@ -1,0 +1,104 @@
+Q = 4
+--- from hackereath solution
+loop 1 -> 4
+row column
+ 1   1 -> Q
+ -> recursion:Q - 1 = 3
+	 loop 1-> 4
+	    row column
+		1    1 -> skipped
+		1    2 -> skipped
+		1    3 -> skipped
+		1    4 -> skipped
+		2    1 -> skipped
+		2    2 -> skipped
+		2    3 -> Q
+		-> recursion: Q - 1 = 2
+			loop 1 -> 4
+			  row column
+			  1   1 -> skipped
+			  1   2 -> skipped
+			  1   3 -> skipped
+			  1   4 -> skipped
+			  2   1 -> skipped
+			  2   2 -> skipped
+			  2   3 -> skipped
+			  2   4 -> skipped
+			  3   1 -> skipped
+			  3   2 -> skipped
+			  3   3 -> skipped
+			  3   4 -> skipped
+			  4   1 -> skipped
+			  4   2 -> Q
+			   -> recursion: Q -1 = 1
+			    -> skipped all
+			  4   2 -> reset to 0
+			  4   3 -> skipped
+			  4   4 -> skipped
+		2    3 -> reset to 0
+		2    4 -> Q
+		-> recursion: Q - 1 = 2
+			loop 1 -> 4
+			 row column
+			 1   1 -> skipped
+			 1   2 -> skipped	
+			 ...
+			 3   2 -> Q
+			 -> recursion: Q - 1 = 1
+			     loop 1 -> 4
+				  row column
+				  1    1 -> skipped
+				  ...
+				  skipped all
+			 3   2 -> reset to 0
+			 3   3 -> skipped
+			 ...
+			 4   3 -> Q
+			 -> recursion: Q - 1 = 11
+		
+		
+		3    1 -> skipped
+		3    2 -> skipped
+		3    3 -> skipped
+		4    1 -> skipped
+		4    2 -> Q
+		-> recursion: Q - 1 = 1
+			loop 1 -> 1	
+			  row column
+			  1   1 -> skipped
+	
+		and so on...
+		
+-- from geekforgeek solution
+N : 4
+Col : 1
+loop 1 -> 4(N)
+ - 1  1 -> Q
+  -> recursion: col + 1 = 2
+     loop 1 -> 4
+	  1  2 -> skipped , checking [1,1]
+	  2  2 -> skipped, checking [2,2], [1,1], [3,1]
+	  3  2
+	  4  2
+
+optimization solution
+- ld[i - col + N - 1]
+-rd[i + col]
+- cl
+- col : 0
+
+loop 0 -> 3
+ 0 -> ld[3] != 1 &&
+	  rd[0] != 1 && cl[0] !=1
+	  -> board[0,0] = 1 -> set Q
+	  -> ld[3] = rd[0] = cl[0] = 1
+	  -> recursion : col = 1
+	    -> loop 0 -> 3
+		 0 ->  ld[2] != 1 &&
+		   rd[1] != 1 && cl[0] !=1
+		 1 ->  ld[3] != 1  &&
+		   rd[2] != 1 && cl[1] !=1
+		 2 -> ld[4] != 1 &&
+		   rd[3] != 1 && cl[2] !=1
+		   -> ld[4] = rd[3] = cl[2] = 1
+ 
