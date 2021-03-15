@@ -575,12 +575,16 @@ void Remove(T value)
 - A self-balancing binary search tree. Named after it’s inventors Georgy Adelson-Velsky and Evgenii Landis
 - The tree is balanced as nodes are added or removed from the tree.
 
+## Complexity
+
+- `O(h)` (e.g., search, max, min, insert, delete.. etc) time where h is the `height of the BST`
+
 ```csharp
 class AVLTreeNode<TNode>{
   AVLTreeNode<TNode> Left;
   AVLTreeNode<TNode> Right;
   TNode Value;
-
+  AVLTree<TNode> Tree;
   public int LeftHeight{
     get {
       return GetMaxHeight(Left);
@@ -650,7 +654,33 @@ class AVLTreeNode<TNode>{
       {
         RightRotation();
       }
-    }    
+    }
+  }
+
+  void ReplaceRoot(AVLTreeNode<TNode> newRoot)
+  {
+    // checking the node that rotate is substree
+    if(this.parent != null)
+    {
+        if(this.parent.Left = this)
+        {
+          this.parent.Left = this;
+        }
+        else if(this.parent.Right = this)
+        {
+          this.parent.Right = this;
+        }
+    }
+    else
+    {
+      Tree.Head = newRoot;
+    }
+
+    // Update the parent for new root;
+    newRoot.parent = this.parent;
+
+    // update new parent for old root
+    this.parent =  newRoot;
   }
 
   enum TreeState{
@@ -696,19 +726,25 @@ class AVLTreeNode<TNode>{
 
 void LeftRotation() {
 
-  var newRoot = root.Right;
-  root.right = newRoot.left;
+  var newRoot = Right;
 
-  newRoot.left = root;
+ // replace new root, old root as well
+  ReplaceRoot(newRoot);
+
+  Right = newRoot.Left;
+
+  newRoot.Left = this;
 }
 ```
 
 ## Right rotation
+
 - Algorithm to balance a left-heavy tree by rotating nodes to the right
 - Steps:
   - 1 Left child becomes the new root
   - 2 Right child of the new root is assigned to left child of the old root
   - 3 Previous root becomes the new root’s right child
+
 ```
       4
     2
@@ -719,30 +755,158 @@ void LeftRotation() {
       2
     1    4
        3
-    
+
 ```
+
 ```csharp
 void RightRotation(){
-  var oldRoot = Left;
-  var newRoot = ReplaceRoot(Left);
-  oldRoot.Left = newRoot.Right;
-  newRoot.Right = oldRoot;
+  var newRoot = Left;
+  ReplaceRoot(newRoot);
+
+  // update old root left  child
+  Left = newRoot.Right;
+
+  // update new root right with new value of old root
+  newRoot.Right = this;
 }
 ```
+
 ## Left-right rotation
+
 - Right rotation the right child
 - Left rotation the root
+
 ```csharp
 void LeftRightRotation(){
   RightRotation(Right)
 
 }
 ```
+
 ## Right-left rotation
+
 - Left rotate the left child
 - Right rotate the root
+
 ```csharp
 void RightLeftRotation(){
 
 }
+```
+
+# B-Tree
+
+- A sorted, balanced, tree structure typically used to access data on slow mediums such as disk or tape drives.
+- The B-tree is well suited for storage systems that `read and write relatively large blocks of data`, such as disks `commonly used in databases and file systems`.
+- Nodes will always have one more child than values
+
+## why use B tree:
+
+- Reduces the number of reads made on the disk
+- B Trees can be easily optimized to adjust its size (that is the number of child nodes) according to the disk size
+- It is a specially designed technique for handling a bulky amount of data.
+- It is a useful algorithm for databases and file systems.
+- A good choice to opt when it comes to reading and writing large blocks of data
+- Disk access time is very high compared to the main memory access time. The main idea of using B-Trees is to reduce the number of disk accesses. Most of the tree operations (search, insert, delete, max, min, ..etc ) require O(h) disk accesses where h is the height of the tree. B-tree is a `fat tree`. The h`eight of B-Trees is kept low by putting maximum possible keys in a B-Tree node`.
+- Generally, the B-Tree node size is kept equal to the disk block size. Since the height of the B-tree is low so total disk accesses for most of the operations are `reduced significantly` compared to balanced Binary Search Trees like AVL Tree, Red-Black Tree, ..etc.
+
+## Complexity
+
+          Average	      Worst case
+
+Space O(n) O(n)
+Search O(log n) O(log n)
+Insert O(log n) O(log n)
+Delete O(log n) O(log n)
+
+## History of B Tree
+- Data is stored on the disk in blocks, this data, when brought into main memory (or RAM) is called data structure.
+- In-case of huge data, searching one record in the disk requires reading the entire disk; this increases time and main memory consumption due to high disk access frequency and data size.
+- To overcome this, index tables are created that saves the record reference of the records based on the blocks they reside in. This drastically reduces the time and memory consumption.
+- Since we have huge data, we can create multi-level index tables.
+Multi-level index can be designed by using B Tree for keeping the data sorted in a self-balancing fashion.
+## Minimal Degree
+
+- The minimum number of children that every non-root node must have. Represented as the variable `T`:
+  - `T` - Each non-root must contain at least T (minimal degree) children
+  - `2T` - Each node in the B-tree will contain a maximum of `2*T` children
+  - `T-1` - Every non-root node will have at least T-1 values
+  - `2T-1` - Every node will have at most `2*T-1` values
+  - Every node, except root, must contain minimum nodes of `[T/2]-1`
+
+## Minimal Node
+
+- A non-root node that has T-1 values and T children.
+
+## Full Node
+
+- A node that has 2*T-1 values and 2*T children.
+
+## Examples
+
+- Valid:
+
+  ```
+  T = 3
+
+       3        6          10
+      1 2   4 5  7 8 9   11 12
+  ```
+
+- Invalid
+
+  ```
+  T = 3
+
+       3       6          10
+      1    4 5  7 8 9   11 12
+
+       3       6          10
+      1 2     4 5    7 8 9 10 11 12
+  ```
+
+## Height
+
+- The number of edges between the root and the leaf nodes. All B-tree leaf nodes must have the same height.
+- Valid:
+
+  ```
+  T = 3
+
+       3        6          10
+                                  -> 1
+      1 2   4 5  7 8 9   11 12
+  ```
+
+- Invalid
+
+  ```
+  T = 3
+
+          3            6      15
+                                    -> 1
+      1 2   4 5   7 10 14   16 17
+                                    -> 2
+                89 11 12 13
+
+    
+  ```
+
+## Searching  
+```
+          3        6          10
+          1 2   4 5  7 8 9   11 12
+Smaller <-                      -> Larger
+```
+
+```pseudo
+bool search(node, valueToFind)
+  foreach value in node
+    if valueToFind == value
+      return true
+    if valueToFind < value
+      return search(<left child>, valueToFind)
+end
+  return search(<last child>, valueToFind)
+end
 ```
