@@ -691,6 +691,44 @@ class AVLTreeNode<TNode>{
 
 }
 
+class AVLTree<TNode>
+{
+  void InOrderTraversal(){
+      if(Head != null)
+      {
+        var stack = new Stack<AVLTreeNode<T>>();
+        var current = head;
+
+        bool goLeftNext =false;
+        stack.push(current);
+
+        while(stack.Count >0)
+        {
+          if(goLeftNext)
+          {
+            while(current.Left != null)
+            {
+              stack.push(current.Left);
+              current = current.Left;
+            }
+          }
+          // in-order is left->yield->right
+          yield return current.Value;
+
+          if(current.Right != null)
+          {
+            current= current.Right;
+            goLeftNext = true;
+          }
+          else
+          {
+            current = stack.Pop();
+            goLeftNext = false;
+          }
+        }
+      }
+  }
+}
 ```
 
 ## Left rotation
@@ -892,6 +930,7 @@ Multi-level index can be designed by using B Tree for keeping the data sorted in
     
   ```
 
+
 ## Searching  
 ```
           3        6          10
@@ -909,4 +948,296 @@ bool search(node, valueToFind)
 end
   return search(<last child>, valueToFind)
 end
+```
+
+## Removing Values
+- Values can only be removed from leaf nodes
+- Ensure that all nodes visited during the remove process have T values
+before entering them
+## Balancing Operations
+### Node Splitting
+- Splitting a child value in half by pulling the middle value up to the parent
+- Used when adding a node and the destination node would have too many
+values
+### Pushing Down
+- Merging two child nodes by pushing a parent value between them
+- Push Down Minimal Root:
+  - When the root has a single value and two minimal children, they can be combined with it to form a full root node.
+- Used when removing a value would leave a child node with too few values, the
+parent has multiple values, and the sum of the adjacent child and the current
+child is less than 2*T-1.
+## Rotation
+- Rotating a value from a non-minimal child, to a sibling minimal child
+- Used when removing a node and pushing down would not work because the
+parent has too few values, but a sibling has a value to spare.
+## Code
+```csharp
+// root = 1 2 3 4 5
+
+// root = 3
+
+// children = [1,2] [4,5,6]
+
+// 			[3]
+// 		[1,2] [4,5,6]
+		
+// 		 [3]
+//  => [1,2] [4,5,6,7,8]
+ 
+//  root = [3,6]
+//  children = [1,2] [4,5] [7,8,9]
+ 
+// 				[3, 6, 9, 12, 15]
+// 	=>	[1,2] [4,5] [7,8] [10, 11] [13,14] [16,17,18]
+			
+// 						    [9]
+// 					    [3, 6]              [12, 15]
+// 	=>	[1,2] [4,5] [7,8]   [10, 11] [13,14] [16,17,18]
+
+// root = [9]
+// children 1 = [3,6] , values = [1,2] [4,5] [7,8]
+// children 2 = [9,12,15] , values = [10, 11] [13,14] [16,17,18]
+
+class BTreeNode<T> where T : Comparable<T>{
+  List<T> Values;
+  BTreeNode<T> Children;
+  int MinDegree;
+  public BTreeNode(int minDegree, List<T> values, BTreeNode<T> children)
+  {
+    MinDegree = minDegree;
+    Values = values;
+    Children = children;
+    Validate();
+  }
+  bool Leaf
+  {
+    get{
+    return Children.Count ==0;
+    }
+  }
+  bool Minimum {
+    get{
+      return  Values.Count == MinDegree - 1;
+    }
+  }
+  bool Full{
+    get {
+      return Values.Count >= 2*MinDegree - 1;
+    }
+  }
+
+  bool Count{
+    get{
+      return Values.Count;
+    }
+  }
+
+  void Validation(){
+    if(Count === 0)
+    {
+      throw new Exception("Every node must have at least one value.");
+
+    }
+    if(Children > 0)
+    {
+      if(Values.Count > Children.Count -1)
+      {
+        throw new Exception("Values must be be one less than children");
+      }
+    }
+    if(Values.Count >= MinDegree * 2 +1)
+    {
+      throw new Exception("the number of values exceeds the degree limit.");
+    }
+  }
+}
+class BTree<T>{
+  BTreeNode<T> Root {get;set;}
+  int MinDegree = 7;
+  // The number of items in the tree
+ public int Count
+  {
+   get;
+  private set;
+  }
+
+  // The current height of the tree
+  // Grows in SplitRootNode, shrinks in PushDownMinimalRoot
+ public int Height
+  {
+     get;
+    private set;
+   }
+
+
+  public BTree(int minDegree)
+  {
+    MinDegree = minDegree;
+  }
+
+  int FindChildIndex(BTreeNode<T> node, T value)
+  {
+    var index = node.Values.BinarySearch(value);
+    if(index < 0)
+    {
+      index = ~index;
+    }
+    return index;
+  } 
+
+  void Add(){
+    if(Root != null)
+    {
+      Root = new BTreeNode<T>(MinDegree);
+    }
+    else
+    {
+      if(Root.Full)
+      {
+        SplitRootNode(Root);
+      }
+      InsertNonRoot(Root);
+    }
+    Count ++;
+  }
+  void InsertNonRoot(BTreeNode<T> node, T value){
+    if(node.Leaf)
+    {
+      node.Values.Insert(FindChildIndex(node, value), value);
+    }
+    else
+    {
+      var childIndex = FindChildIndex(node, value);
+      BTreeNode<T> child = node.Children[childIndex];
+
+      if(node.Full)
+      {
+        SplitChildNode(node, childIndex);
+
+        // re-find the child node where the value would be added
+        child = node.Children(FindChildIndex(node,value));
+      }
+
+      InsertNonRoot(child,value);
+    }
+  }
+  // [1,2,3,4,5]
+  void SplitRootNode(BTreeNode<T> node){
+    var midIndex = node/2;
+    // [1,2]
+    var left = new BTreeNode<T>(MinDegree, node.Values.Take(midIndex), node.Children.Take(midIndex+1));
+    // [4,5]
+    var right = new BTreeNode<T>(MinDegree, node.Values.TakeLast(midIndex), node.Children.TakeLast(midIndex+1));
+
+    // remove [1,2] and [4,5]
+    node.Values.RemoveRange(0, midIndex);
+    node.Values.RemoveRange(1, midIndex);
+
+    // clear all the root node children
+    // (the left and right nodes have those children)
+    node.Chidlren.Clear();
+
+    node.Children.Insert(left);
+    node.Children.Insert(right);
+
+    node.Validate();
+    Height ++;
+  }
+          /*
+         * Splits a child node by pulling the middle node up from it
+         * into the current (parent) node.
+         * 
+         *       [3          9]
+         *  [1 2] [4 5 6 7 8] [10 11] 
+         *  
+         *  splitting [4 5 6 7 8] would pull 6 up to its parent
+         *  
+         *      [3     6     9]
+         *  [1 2] [4 5] [7 8] [10 11] 
+         */
+  void SplitChildNode(BTreeNode<T> parent, int childIndex)
+  {
+      // [4, 5, 6, 7, 8]
+      var child = parent.Children[childIndex];
+
+      // 6
+      var midIndex = child.Value.Count / 2
+
+      // [4, 5]
+      var left = new BTreeNode<T>(MinDegree, child.Value.Take(midIndex), child.Children.Take(midIndex+1));
+      // [7, 8]
+      var right = new BTreeNode<T>(MinDegree, child.Value.TakeLast(midIndex), child.Children.TakeLast(midIndex+1));
+
+      // [3, 6, 9]
+      parent.Value.Insert(childIndex, child.Value[midIndex]);
+
+      // remove [4 5 6 7 8]
+      parent.Children.RemoveAt(childIndex);
+
+      // add the child point to [4, 5] and [7, 8]
+      // add right first to maintain ordering
+      parent.Children.Insert(midIndex,right);
+      parent.Children.Insert(midIndex,left);
+
+      parent.Validate();
+      left.Validate();
+      right.Validate();
+  }
+
+  void Remove(T value)
+  {    
+    var removed = RemoveNode(Root, value);
+    if(removed)
+    {
+      Count --;
+
+      if(Count ==0 )
+      {
+        Root = null;
+      }
+    }
+    return removed;
+
+  }
+
+bool RemoveNode(BTreeNode<T> node, T value) {
+
+    if(node.Leaf)
+    {
+      return RemoveLeaf(node, value);
+    }
+    
+    if(node.Values.Contains(value))
+    {
+      return RemoveNode(PushDown(node,value), value);
+    }
+  }
+
+   bool RemoveLeaf(BTreeNode<T> node, T value)
+   {
+     return node.Values.Remove(value);
+   }
+
+
+  //    [3 , 6]
+  // [1,2] [4,5] [7,8]
+  void PushDown(BTreeNode<T> node, T value){
+    var childIndex = FindChildIndex(node,value);
+    var left= node.Children[childIndex];
+    var right = node.Children[childIndex + 1]
+
+    left.Value.Add(value);
+    left.Value.AddRange(Right.Values);
+    left.Children.AddRange(Right.Children);
+
+    // remove the value from the parent: 6
+    node.Values.RemoveAt(childIndex);
+    // remove right childrens
+    node.Children.RemoveAt(childIndex + 1);
+
+    node.Validate();
+    left.Validate();
+    return left;
+  }
+}
 ```
