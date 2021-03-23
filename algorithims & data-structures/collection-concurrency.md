@@ -92,3 +92,71 @@ while(jobs.Count > 0) { // Check if the count is more than 0 while outside the l
 }
 
 ```
+# Using Monitor Lock
+- Pro
+  - Non-concurrent-safe collections can be used in concurrent environments
+  - Easy to implement
+- Cons
+  - Caller is responsible for all thread synchronization
+  - Readers block other readers
+  - Easy to implement wrong
+
+# Monitor Locking vs Reader/Writer Locking
+- ML:
+  - A single monitor lock is used to serialize access to the container
+  - Monitor locks are very light-weight
+  - Readers block other readers
+- RWL
+  - A single reader/writer lock is used to serialize write-access to the container
+  - The reader/writer lock allows multiple readers concurrently while blocking writes
+  - Concurrent reading can overcome performance costs versus monitors
+
+# Reader/Writer locking
+- The .NET ReaderWriterLockSlim class used to provide concurrent readers while serializing all writers.
+
+```csharp
+var rwLock = new ReaderWriterLockSlim(); // A single ReaderWriterLockSlim instance serializes writes and blocks writes while allowing concurrent reads.
+
+public void Enqueue(T value) { // The write lock is entered before a nonconcurrency-safe operation. All reads and writes are blocked until this is exited.
+  rwLock.EnterWriteLock();
+  try
+  {
+    heap.Push(value); // The non-concurrent-safe operation runs within a try-block
+  }
+  finally
+  {
+    rwLock.ExitWriteLock(); // In the finally-block the write lock is exited
+  }
+}
+public T Peek() {
+  rwLock.EnterReadLock(); // In a read-only method a read lock is used to allow concurrent readers while blocking writes
+  try
+  {
+    return heap.Top(); // The read operation is performed within a try-block
+  }
+  finally
+  {
+    rwLock.ExitReadLock(); //When the number of readers is zero then writes will be allowed again
+  }
+}
+```
+# Concurrent .NET Collections
+- ConcurrentDictionary<TK,TV> 
+- ConcurrentQueue<T>
+- ConcurrentStack<T> 
+- ConcurrentBag<T>
+
+```csharp
+using System.Collections.Concurrent; // The concurrent collections are in the System.Collections.Concurrent namespace
+//...
+var queue = new ConcurrentQueue<int>(); //  Allocate a concurrent queue of integers
+queue.Enqueue(1);  // Enqueue works the same as Queue<T>
+int value;
+
+if(queue.TryPeek(out value)) { // Peeking requires the “Try” pattern which avoids having to fail if the queue is empty
+  Console.WriteLine(value);
+}
+if(queue.TryDequeue(out value)) { // Dequeuing also uses the “Try” pattern to avoid failure when the queue is empty
+  Console.WriteLine(value);
+}
+```

@@ -250,13 +250,11 @@ void Merge(int[] items, int[] left, int[] right){
   - Select the median of the first, last, and middle items
 
 ```csharp
-// 10 20 30 90 80 85 12 70 
-// compare to 70(pivot):
-// 10 < 70 -> no changed -> i =1
-// 80 swap 30 -> 10 30 80 90 40 50 70   -> i = 2  
-// 80 swap 40 -> 10 30 40 90 80 50 70 -> i = 3
-// 90 swap 50 -> 10 30 40 50 80 90 70 -> i = 4
-// final -> out of loop: 70 swap 50 -> 10 30 40 50 70 90 80
+// 10 30 90 80 85 12 70 
+// compare to 70(pivot): storeIndex = 2, index = 5
+// -> 10 30 12 70 85 90 80
+// sub sorting left: 10 30 12
+// sub sorting right: 85 90 80
 void quickSort(int[] items, int left, int right){
 
   if(left < right)
