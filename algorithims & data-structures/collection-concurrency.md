@@ -13,7 +13,9 @@ class Job {
   }
 }
 ```
+
 # Job class
+
 - A basic job class that contains a priority and a process method.
 
 ```csharp
@@ -28,7 +30,6 @@ while(jobs.Count > 0) { //Dequeue and process each of the job in priority order.
 }
 
 ```
- 
 
 ```csharp
 Thread[] adders = new Thread[4]; //Add jobs using 4 threads
@@ -43,8 +44,11 @@ for(int i=0; i < adders.Length; i++) { //Create the 4 threads and start them to 
   adders[i].Start();
 }
 ```
+
 - Concurrent updates to nonconcurrency-safe collections can lead to unexpected behavior and data loss
+
 # Caller Synchronization
+
 - The caller is responsible for ensuring all access to the collection is performed in a `concurrency-safe` manner
 - Allows concurrent-safe access to non-concurrency-safe collections
 - No overhead when the collection is used non-concurrently
@@ -65,34 +69,24 @@ object jobsLock = new object(); //Create the object that will be used as the sha
 ```
 
 ```csharp
-object jobsLock = new object(); 
-
-// ...
-while(jobs.Count > 0) {
-  lock(jobsLock) { // Count needs to be called within the same lock scope as the call to Dequeue
-    Job nextJob = jobs.Dequeue()
-    nextJob.Process(); // The Process method is holding the lock open.
-  }
-}
-
-```
-
-
-```csharp
 while(jobs.Count > 0) { // Check if the count is more than 0 while outside the lock
   Job nextJob = null;
+  // this lock prevent other threads can go into
   lock(jobsLock) { // Take the lock
     if(jobs.Count > 0) { // Check the count again while under the lock
       nextJob = jobs.Dequeue(); // While holding the lock, Dequeue the next job
     }
   }
+  // when a thread exits lock section, another thread can into the lock serializely
   if(nextJob != null) {
     nextJob.Process(); // If we dequeued a job, then process it
   }
 }
 
 ```
+
 # Using Monitor Lock
+
 - Pro
   - Non-concurrent-safe collections can be used in concurrent environments
   - Easy to implement
@@ -102,6 +96,7 @@ while(jobs.Count > 0) { // Check if the count is more than 0 while outside the l
   - Easy to implement wrong
 
 # Monitor Locking vs Reader/Writer Locking
+
 - ML:
   - A single monitor lock is used to serialize access to the container
   - Monitor locks are very light-weight
@@ -112,6 +107,7 @@ while(jobs.Count > 0) { // Check if the count is more than 0 while outside the l
   - Concurrent reading can overcome performance costs versus monitors
 
 # Reader/Writer locking
+
 - The .NET ReaderWriterLockSlim class used to provide concurrent readers while serializing all writers.
 
 ```csharp
@@ -128,6 +124,7 @@ public void Enqueue(T value) { // The write lock is entered before a nonconcurre
     rwLock.ExitWriteLock(); // In the finally-block the write lock is exited
   }
 }
+
 public T Peek() {
   rwLock.EnterReadLock(); // In a read-only method a read lock is used to allow concurrent readers while blocking writes
   try
@@ -140,10 +137,88 @@ public T Peek() {
   }
 }
 ```
+
+# Queue with locking
+
+```csharp
+ public class PriorityQueue<T> : IQueue<T>
+    {
+        readonly Heap<T> heap;
+        readonly object syncLock = new object();
+
+        public PriorityQueue()
+            : this(Comparer<T>.Default)
+        {
+        }
+
+        public PriorityQueue(IComparer<T> comparer)
+        {
+            heap = new Heap<T>(comparer);
+        }
+
+        public void Enqueue(T value)
+        {
+            lock (syncLock)
+            {
+                heap.Push(value);
+            }
+        }
+
+        public T Dequeue()
+        {
+            lock (syncLock)
+            {
+                if (heap.Empty)
+                {
+                    throw new QueueEmptyException();
+                }
+
+                T value = heap.Top();
+                heap.Pop();
+
+                return value;
+            }
+        }
+
+        public T Peek()
+        {
+            lock (syncLock)
+            {
+                if (heap.Empty)
+                {
+                    throw new QueueEmptyException();
+                }
+
+                return heap.Top();
+            }
+        }
+
+        public void Clear()
+        {
+            lock (syncLock)
+            {
+                heap.Clear();
+            }
+        }
+
+        public int Count
+        {
+            get
+            {
+                lock (syncLock)
+                {
+                    return heap.Count;
+                }
+            }
+        }
+    }
+```
+
 # Concurrent .NET Collections
-- ConcurrentDictionary<TK,TV> 
+
+- ConcurrentDictionary<TK,TV>
 - ConcurrentQueue<T>
-- ConcurrentStack<T> 
+- ConcurrentStack<T>
 - ConcurrentBag<T>
 
 ```csharp
