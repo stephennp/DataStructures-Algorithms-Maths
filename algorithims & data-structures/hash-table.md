@@ -289,13 +289,202 @@ class HashTable<TKey,TValue>
 
 ```
 
-# Hash Function
+## Collision resolution techniques
+
+- Separate chaining is one of the most commonly used collision resolution techniques. It is usually implemented using linked lists. In separate chaining, each element of the hash table is a linked list.
+- To store an element in the hash table you must insert it into a specific linked list. If there is any collision (i.e. two different elements have same hash value) then store both the elements in the same linked list.
+
+- Hash function will return an integer from 0 to 19.
+
+```java
+vector <string> hashTable[20];
+    int hashTableSize=20;
+
+   void insert(string s)
+    {
+        // Compute the index using Hash Function
+        int index = hashFunc(s);
+        // Insert the element in the linked list at the particular index
+        hashTable[index].push_back(s);
+    }
+   void search(string s)
+    {
+        //Compute the index by using the hash function
+        int index = hashFunc(s);
+        //Search the linked list at that specific index
+        for(int i = 0;i < hashTable[index].size();i++)
+        {
+            if(hashTable[index][i] == s)
+            {
+                cout << s << " is found!" << endl;
+                return;
+            }
+        }
+        cout << s << " is not found!" << endl;
+    }
+```
+
+# Linear probing (open addressing or closed hashing)
+
+- In open addressing, instead of in linked lists, all entry records are stored in the array itself. When a new entry has to be inserted, the hash index of the hashed value is computed and then the array is examined (starting with the hashed index). If the slot at the hashed index is unoccupied, then the entry record is inserted in slot at the hashed index else it proceeds in some probe sequence until it finds an unoccupied slot.
+
+- The probe sequence is the sequence that is followed while traversing through entries. In different probe sequences, you can have different intervals between successive entry slots or probes.
+
+- When searching for an entry, the array is scanned in the same sequence until either the target element is found or an unused slot is found. This indicates that there is no such key in the table. The name "open addressing" refers to the fact that the location or address of the item is not determined by its hash value.
+
+- Linear probing is when the interval between successive probes is fixed (usually to 1). Let’s assume that the hashed index for a particular entry is index. The probing sequence for linear probing will be:
+
+```
+index = index % hashTableSize
+index = (index + 1) % hashTableSize
+index = (index + 2) % hashTableSize
+index = (index + 3) % hashTableSize
+```
+
+- Assumption:
+  - There are no more than 20 elements in the data set.
+  - Hash function will return an integer from 0 to 19.
+  - Data set must have unique elements.
+
+```csharp
+ string hashTable[21];
+ int hashTableSize = 21;
+
+void insert(string s)
+    {
+        //Compute the index using the hash function
+        int index = hashFunc(s);
+        //Search for an unused slot and if the index will exceed the hashTableSize then roll back
+        while(hashTable[index] != "")
+            index = (index + 1) % hashTableSize;
+        hashTable[index] = s;
+    }
+
+void search(string s)
+    {
+        //Compute the index using the hash function
+        int index = hashFunc(s);
+         //Search for an unused slot and if the index will exceed the hashTableSize then roll back
+        while(hashTable[index] != s and hashTable[index] != "")
+            index = (index + 1) % hashTableSize;
+        //Check if the element is present in the hash table
+        if(hashTable[index] == s)
+            cout << s << " is found!" << endl;
+        else
+            cout << s << " is not found!" << endl;
+    }
+```
+
+# Quadratic Probing
+
+- Quadratic probing is similar to linear probing and the only difference is the interval between successive probes or entry slots.
+- Here, when the slot at a hashed index for an entry record is already occupied, you must start traversing until you find an unoccupied slot.
+- The interval between slots is computed by adding the successive value of an arbitrary polynomial in the original hashed index.
+
+- Let us assume that the hashed index for an entry is index and at index there is an occupied slot. The probe sequence will be as follows:
+
+  - index = index % hashTableSize
+  - index = (index + 12) % hashTableSize
+  - index = (index + 22) % hashTableSize
+  - index = (index + 32) % hashTableSize
+
+- Assumption
+
+  - There are no more than 20 elements in the data set.
+  - Hash function will return an integer from 0 to 19.
+  - Data set must have unique elements.
+
+```csharp
+string hashTable[21];
+int hashTableSize = 21;
+
+   void insert(string s)
+    {
+        //Compute the index using the hash function
+        int index = hashFunc(s);
+        //Search for an unused slot and if the index will exceed the hashTableSize roll back
+        int h = 1;
+        while(hashTable[index] != "")
+        {
+            index = (index + h*h) % hashTableSize;
+            h++;
+        }
+        hashTable[index] = s;
+    }
+
+void search(string s)
+    {
+        //Compute the index using the Hash Function
+        int index = hashFunc(s);
+         //Search for an unused slot and if the index will exceed the hashTableSize roll back
+       int h = 1;
+        while(hashTable[index] != s and hashTable[index] != "")
+        {
+            index = (index + h*h) % hashTableSize;
+                 h++;
+        }
+        //Is the element present in the hash table
+        if(hashTable[index] == s)
+            cout << s << " is found!" << endl;
+        else
+            cout << s << " is not found!" << endl;
+    }
+```
 
 - A function that maps data of arbitrary size to data of a fixed size.
 - Examples:
   - Verifying downloaded data
   - Storing passwords in a database
   - Hash tables key lookup
+
+# Double hashing
+
+- Double hashing is similar to linear probing and the only difference is the interval between successive probes. Here, the interval between probes is computed by using two hash functions.
+
+- Let us say that the hashed index for an entry record is an index that is computed by one hashing function and the slot at that index is already occupied. You must start traversing in a specific probing sequence to look for an unoccupied slot. The probing sequence will be:
+
+```csharp
+index = (index + 1 * indexH) % hashTableSize;
+index = (index + 2 * indexH) % hashTableSize;
+```
+
+- Here, indexH is the hash value that is computed by another hash function.
+
+- Assumption
+
+  - There are no more than 20 elements in the data set.
+  - Hash functions will return an integer from 0 to 19.
+  - Data set must have unique elements.
+
+```csharp
+  string hashTable[21];
+  int hashTableSize = 21;
+
+  void insert(string s)
+    {
+        //Compute the index using the hash function1
+        int index = hashFunc1(s);
+        int indexH = hashFunc2(s);
+        //Search for an unused slot and if the index exceeds the hashTableSize roll back
+        while(hashTable[index] != "")
+            index = (index + indexH) % hashTableSize;
+        hashTable[index] = s;
+    }
+
+  void search(string s)
+    {
+        //Compute the index using the hash function
+        int index = hashFunc1(s);
+        int indexH = hashFunc2(s);
+         //Search for an unused slot and if the index exceeds the hashTableSize roll back
+        while(hashTable[index] != s and hashTable[index] != "")
+            index = (index + indexH) % hashTableSize;
+        //Is the element present in the hash table
+        if(hashTable[index] == s)
+            cout << s << " is found!" << endl;
+        else
+            cout << s << " is not found!" << endl;
+```
 
 # Stability
 
@@ -593,3 +782,11 @@ public Contact Add(Contact contact)
     }
    }
 ```
+
+# Applications
+
+- Associative arrays: Hash tables are commonly used to implement many types of in-memory tables. They are used to implement associative arrays (arrays whose indices are arbitrary strings or other complicated objects).
+- Database indexing: Hash tables may also be used as disk-based data structures and database indices (such as in dbm).
+- Caches: Hash tables can be used to implement caches i.e. auxiliary data tables that are used to speed up the access to data, which is primarily stored in slower media.
+- Object representation: Several dynamic languages, such as Perl, Python, JavaScript, and Ruby use hash tables to implement objects.
+Hash Functions are used in various algorithms to make their computing faster

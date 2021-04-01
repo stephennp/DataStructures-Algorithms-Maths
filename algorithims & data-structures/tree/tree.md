@@ -33,6 +33,24 @@
   | 5 | 16 | 31 |
   | 6 | 32 | 63 |
 
+# Application of trees
+
+- Make information easy to search (see tree traversal)
+- Manipulate sorted lists of data
+- Use as a workflow for compositing digital images for visual effects
+- Use in router algorithms
+
+# Commonly-used terminologies
+
+- Root: Top node in a tree
+- Child: Nodes that are next to each other and connected downwards
+- Parent: Converse notion of child
+- Siblings: Nodes with the same parent
+- Descendant: Node reachable by repeated proceeding from parent to child
+- Ancestor: Node reachable by repeated proceeding from child to parent.
+- Leaf: Node with no children
+- Internal node: Node with at least one child
+- External node: Node with no children
 # Binary tree node
 
 - A node which contains a signle data item and pointers for the left and right child

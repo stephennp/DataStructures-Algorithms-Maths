@@ -224,7 +224,45 @@ bool check (int N)
 ```
 - Example
 
-- Let’s say N = 20 = {10100} (base) 2. Now let’s check if it’s 2nd bit is set or not(starting from 0). For that, we have to AND it with 22 = 1<<2 = {100}(base)2 .
+- Let’s say N = 20 = {10100} (base) 2. Now let’s check if it’s 2nd bit is set or not(starting from 0). For that, we have to AND it with 2^2 = 1<<2 = {100}(base)2 .
 - {10100} & {100} = {100} = 2^2 = 4(non-zero number), which means it’s `2nd bit is set`.
 
 # How to generate all the possible subsets of a set ?
+- A big advantage of bit manipulation is that it can help to iterate over all the subsets of an N-element set. As we all know there are 2^N possible subsets of any given set with N elements. What if we represent each element in a subset with a bit. A bit can be either 0 or 1, thus we can use this to denote whether the corresponding element belongs to this given subset or not. So each bit pattern will represent a subset.
+
+- Consider a set A of 3 elements.
+  ```A = {a, b, c}```
+
+- Now, we need 3 bits, one bit for each element. 1 represent that the corresponding element is present in the subset, whereas 0 represent the corresponding element is not in the subset. Let’s write all the possible combination of these 3 bits.
+```
+0 = (000)2 = {}
+1 = (001)2 = {c}
+2 = (010)2 = {b}
+3 = (011)2 = {b, c}
+4 = (100)2 = {a}
+5 = (101)2 = {a, c}
+6 = (110)2 = {a, b}
+7 = (111)2 = {a, b, c}
+```
+- Pseudo Code:
+```csharp
+possibleSubsets(A, N):
+        for i = 0 to 2^N:
+            for j = 0 to N:
+                if jth bit is set in i:
+                    print A[j]
+            print ‘\n’
+```            
+- Implementation:
+```csharp
+  void possibleSubsets(char A[], int N)
+    {
+        for(int i = 0;i < (1 << N); ++i)
+        {
+            for(int j = 0;j < N;++j)
+                if(i & (1 << j))
+                    cout << A[j] << ‘ ‘;
+            cout << endl;
+        }
+    }
+```
