@@ -424,7 +424,8 @@ class BinaryTree<TNode> {
   }
 }
 ```
-
+## Applications
+- Segment trees
 # Search
 
 - Average : O(n)
