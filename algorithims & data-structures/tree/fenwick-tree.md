@@ -36,9 +36,10 @@ int prefixsum(int k)    //calculate the sum of all a[i] such that 0 <= i < k
 # Psudo code
 
 ```csharp
-   {2, 1, 1, 3, 2, 3,  4, 5, 6, 7, 8, 9} 
+  index = 0 --->
+         {2, 1, 1, 3, 2, 3,  4, 5, 6, 7, 8, 9} 
 
-=> index in BIT {1, 2, 3, 4, 5, 6, 7, 8,9, 10, 11, 12}
+=> index in BIT {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
 
 => convert {2, 3, 1, 7, 2, 5, 4, 21, 6, 13, 8, 30}
 
@@ -60,11 +61,11 @@ use: split right most bit
 12 = 1100 => 1000
 =>
 index=			0
-		(0,0)  (0,1)	(0,3)			  (0,7)
-		 1[2]   2[3]	 4[7]   		  8[21]		
+		(0,0)  (0,1)	(0,3)			        (0,7)
+		 1[2]   2[3]	 4[7]   		      8[21]		
 		 
-		 (2,2)			 (4,0) (4,1)    (8,0) (8,1)   (8,3)
-		  3[1]	 		  5[2] 6[5]      9[6] 10[13]   12[30]
+		       (2,2)	(4,0) (4,1)   (8,0) (8,1)   (8,3)
+		        3[1]	 5[2] 6[5]      9[6] 10[13]   12[30]
 							    (6,0)		  (10,0)
 						        7[4]		  11[8]
 	
@@ -80,4 +81,41 @@ index=			0
 10 = 2^3 + 2^1  = [8,1]-> 8 next to 2
 11 = 2^3 + 2^1 + 2^0 = [10,1] -> 10 next to 1
 12 = 2^3 + 2^2 = [8,3] -> 8 next to 4
+```
+
+## Implementation
+
+```csharp
+void Update(int n, int index, arr[] BITree)
+{
+
+  index = index + 1;
+
+   // Traverse all ancestors and add 'val' 
+  while(index <= n)
+  { 
+
+    BITree[index] += val;
+
+    // flip the right most bit 
+    // Update index to that of parent 
+    // in update View 
+    index += index & (-index)
+  }
+}
+
+int Sum(int index)
+{
+  int sum= 0;
+  index += index;
+
+  // Traverse ancestors of BITree[index] 
+  while(index > 0)
+  {
+    sum += BITree[index];
+    // Move index up to parent node
+    index -= index & (-index);
+  }
+  return sum;
+}
 ```
