@@ -86,6 +86,8 @@ index=			0
 ## Implementation
 
 ```csharp
+// Complexity: O(LogN)
+// Space: O(N)
 void Update(int n, int index, arr[] BITree)
 {
 
@@ -104,6 +106,7 @@ void Update(int n, int index, arr[] BITree)
   }
 }
 
+// Complexity: O(LogN)
 int Sum(int index)
 {
   int sum= 0;
@@ -119,3 +122,7 @@ int Sum(int index)
   return sum;
 }
 ```
+
+# Application
+ - Binary Indexed trees are used to implement the arithmetic coding algorithm. Development of operations it supports were primarily motivated by use in that case.
+- Binary Indexed Tree can be used to count inversions in an array in O(NLogN)  time.

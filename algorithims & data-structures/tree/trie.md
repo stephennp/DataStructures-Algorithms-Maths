@@ -34,6 +34,7 @@ abacab
 # Psuedo code
 
 ```csharp
+// Complexity: O(W*L), where W is the number of words, and L is an average length of the word
 void insert(String s)
 {
     for(every char in string s)
@@ -45,7 +46,7 @@ void insert(String s)
         current_node=child_node;
     }
 }
-
+// Complexity: O(W*L)
 boolean check(String s)
 {
     for(every char in String s)
