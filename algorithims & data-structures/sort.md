@@ -12,12 +12,18 @@
 
 # Bubble sort
 
+- Is one of the simplest sorting algorithms
+  - It is based on a repeated swap between adjacent elements if they are in wrong order. It is stable
+- This algorithm is almost `never` used because of its O(N²) time complexitiy. But in computer graphics, it is popular to detect a very small error (like swap of two elements) in almost sorted array.
+
+
 - Complexity:
 
   - Worst: `O(n²)`
   - Average: `O(n²)`
   - Best: `O(n)`
   - Memory: `O(1)`.
+  - Stable: yes
 
 - Steps:
 
