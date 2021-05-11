@@ -157,7 +157,7 @@ F = p * (C(1) + C(2) + ...... + C(N))
 
 - Can you aggregate these 2 parameters (time and priority) into a single score such that if you sort the jobs from higher score to lower score you will always get an optimal solution?
 
-- IfRemember the 2 rules.
+- Remember the 2 rules.
 
   1. Give preference to higher priorities so that the higher priorities lead to a higher score. 
   2. Give preference to tasks that require less time to complete so that the more time that is required should decrease the score.
