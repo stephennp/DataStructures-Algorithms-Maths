@@ -205,7 +205,6 @@ Therefore, the final algorithm that returns the optimal value of the objective f
 - `Time complexity` You have 2 loops taking O(N) time each and one sorting function taking O(N * logN). Therefore, the overall time complexity is O(2 * N + N * logN) = `O(N * logN)`.
 
 # Activity Selection problem
-
 # Fractional Knapsack problem
 
 # Scheduling problem
