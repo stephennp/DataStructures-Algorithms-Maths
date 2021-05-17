@@ -1,4 +1,5 @@
 # Intro
+
 - There are many ways to traverse graphs. BFS is the most commonly used approach.
 
 - BFS is a traversing algorithm where you should start traversing from a selected node (source or starting node) and traverse the graph layerwise thus exploring the neighbour nodes (nodes which are directly connected to source node). You must then move towards the next-level neighbour nodes.
@@ -33,10 +34,78 @@ BFS (G, s)   //Where G is the graph and s is the source node
            //Removing that vertex from queue,whose neighbour will be visited now
            v  =  Q.dequeue( )
 
-          //processing all the neighbours of v  
+          //processing all the neighbours of v
           for all neighbours w of v in Graph G
-               if w is not visited 
+               if w is not visited
                         Q.enqueue( w )             //Stores w in Q to further visit its neighbour
                         mark w as visited.
 
 ```
+
+# Implementation
+
+```python
+from collections import defaultdict
+import time
+
+class Graph:
+
+    def __init__(self, size):
+        self.graph = defaultdict(list)
+        self.vertexSize = size
+
+    def addEdge(self, u, v):
+        self.graph[u].append(v)
+
+    def BFS(self, source):
+       # length = vertex size
+        visited = [False] * self.vertexSize
+        level = [0] * self.vertexSize
+        queue = []
+        queue.append(source)
+        visited[source] = True
+        level[source] = 0
+        while queue:
+            q = queue.pop(0)
+
+            print(q)
+            # get all neightbours of this vertex
+            for v in self.graph[q]:
+                if(visited[v] == False):
+                    level[v] = level[q] + 1
+                    queue.append(v)
+                    visited[v] = True
+
+        time.sleep(1)
+
+
+# 7 vertexes = [0, 1, 2, 3, 4]
+#      0
+#    3   1
+#   4     2
+graph = Graph(5)
+
+graph.addEdge(0, 3)
+graph.addEdge(0, 1)
+graph.addEdge(3, 0)
+graph.addEdge(3, 4)
+graph.addEdge(1, 2)
+
+graph.BFS(0)
+
+time.sleep(10)
+
+```
+
+# Find shortest path
+- This type of BFS is used to find the shortest distance between `two nodes` in a graph provided that the edges in the graph have the weights `0 or 1`. If you apply the BFS explained earlier in this article, you will get an incorrect result for the optimal distance between 2 nodes.
+
+- In this approach, a boolean array is not used to mark the node because the condition of the optimal distance will be checked when you visit each node. `A double-ended queue is used to store the node`. In 0-1 BFS, if the weight of the edge = 0, then the node is pushed to the front of the dequeue. If the weight of the edge = 1, then the node is pushed to the back of the dequeue.
+
+## Implementation
+
+Here, edges[ v ] [ i ] is an adjacency list that exists in the form of pairs i.e. edges[ v ][ i ].first will contain the node to which v is connected and edges[ v ][ i ].second will contain the distance between v and edges[ v ][ i ].first.
+
+Q is a double-ended queue. The distance is an array where, distance[ v ] will contain the distance from the start node to v node. Initially the distance defined from the source node to each node is infinity.
+
+
