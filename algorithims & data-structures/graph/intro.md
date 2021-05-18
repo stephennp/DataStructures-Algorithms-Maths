@@ -121,35 +121,79 @@ i/j:  1 2 3 4
 - An array of lists is used. The size of the array is equal to the number of vertices. Let the array be an array[]. An entry array[i] represents the list of vertices adjacent to the ith vertex.
 - This representation can also be used to represent a weighted graph. The weights of edges can be represented as lists of pairs. Following is the adjacency list representation of the above graph.
 
-```C++
-#include<iostream >
-     #include < vector >
+```python
+"""
+A Python program to demonstrate the adjacency
+list representation of the graph
+"""
 
-    using namespace std;
+# A class to represent the adjacency list of the node
+class AdjNode:
+    def __init__(self, data):
+        self.vertex = data
+        self.next = None
 
-    vector <int> adj[10];
 
-    int main()
-    {
-        int x, y, nodes, edges;
-        cin >> nodes;       //Number of nodes
-        cin >> edges;       //Number of edges
-        for(int i = 0;i < edges;++i)
-        {
-                cin >> x >> y;
-            adj[x].push_back(y);        //Insert y in adjacency list of x
-         }
-    for(int i = 1;i <= nodes;++i)
-    {
-            cout << "Adjacency list of node " << i << ": ";
-        for(int j = 0;j < adj[i].size();++j)
-            {
-            if(j == adj[i].size() - 1)
-                    cout << adj[i][j] << endl;
-            else
-                cout << adj[i][j] << " --> ";
-    }
-    }
-    return 0;
-    }
+# A class to represent a graph. A graph
+# is the list of the adjacency lists.
+# Size of the array will be the no. of the
+# vertices "V"
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices
+        self.graph = [None] * self.V
+
+    # Function to add an edge in an undirected graph
+    def add_edge(self, src, dest):
+        # Adding the node to the source node
+        node = AdjNode(dest)
+        node.next = self.graph[src]
+        self.graph[src] = node
+
+        # Adding the source node to the destination as
+        # it is the undirected graph
+        node = AdjNode(src)
+        node.next = self.graph[dest]
+        self.graph[dest] = node
+
+    # Function to print the graph
+    def print_graph(self):
+        for i in range(self.V):
+            print("Adjacency list of vertex {}\n head".format(i), end="")
+            temp = self.graph[i]
+            while temp:
+                print(" -> {}".format(temp.vertex), end="")
+                temp = temp.next
+            print(" \n")
+
+
+# Driver program to the above graph class
+if __name__ == "__main__":
+    V = 5
+    graph = Graph(V)
+    graph.add_edge(0, 1)
+    graph.add_edge(0, 4)
+    graph.add_edge(1, 2)
+    graph.add_edge(1, 3)
+    graph.add_edge(1, 4)
+    graph.add_edge(2, 3)
+    graph.add_edge(3, 4)
+
+    graph.print_graph()
 ```
+
+# 0-1 BFS (Shortest Path in a Binary Weight Graph)
+- Find the shortest path from source vertex to every other vertex.
+
+  ![Drag Racing](binary-Graph.png)
+```
+Output : Shortest distances from given source
+         0 0 1 1 2 1 2 1 2
+
+Explanation : 
+Shortest distance from 0 to 0 is 0
+Shortest distance from 0 to 1 is 0
+Shortest distance from 0 to 2 is 1
+```
+- In normal BFS of a graph all edges have `equal weight` but in `0-1 BFS some edges may have 0 weight and some may have 1 weight`. 
+- In this we will not use bool array to mark visited nodes but at each step we will check for the optimal distance condition. We use double ended queue to store the node. While performing BFS if a edge having weight = 0 is found node is pushed at front of double ended queue and if a edge having weight = 1 is found, it is pushed at back of double ended queue.
