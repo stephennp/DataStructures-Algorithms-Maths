@@ -29,6 +29,7 @@ int prefixsum(int k)    //calculate the sum of all a[i] such that 0 <= i < k
 
 # Isolating the last set bit
 - Example: x = `1110` (in binary)
+
 | Binary digit | 1 | 1 | 1 | 0 |
 | -- | -- | -- | -- | -- |
 | Index | 3 | 2 | 1 | 0 |

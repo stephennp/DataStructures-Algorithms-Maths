@@ -182,18 +182,41 @@ if __name__ == "__main__":
     graph.print_graph()
 ```
 
-# 0-1 BFS (Shortest Path in a Binary Weight Graph)
-- Find the shortest path from source vertex to every other vertex.
+# Comparing Adjacency matrix, linked-list and set
+- Adjacency matrix:
+  - Space: O(v^2)
+  - Checking if edge is present: O(1)
+  - Iterating over edges: O(v)
+- Adjacency Linked-list:
+  - Space: O(e+v)
+  - Checking if edge is present: O(degree v)
+  - Iterating over edges: O(degree v)
+- Adjacency set:
+  - Space: O(e+v)
+  - Checking if edge is present: O(Indegree v)
+  - Iterating over edges: O(degree v)
 
-  ![Drag Racing](binary-Graph.png)
-```
-Output : Shortest distances from given source
-         0 0 1 1 2 1 2 1 2
+# Traversing tree
+- One node is designated root
+- Only one specific path from root to any node
+- No cycles
+- Any node will be visited exactly once
+- No need to track which nodes already visited
+- No unconnected nodes possible
+# Traversing graph
+- No designated root
+- Multiple paths possible between any pair of nodes
+- Cycles possible
+- Nodes could be visited multiple times (could lead to infinite loop)
+- Essential to track which nodes already visited
+- Unconnected nodes possible
+- `Algorithm can not terminate until all nodes have been visited`
 
-Explanation : 
-Shortest distance from 0 to 0 is 0
-Shortest distance from 0 to 1 is 0
-Shortest distance from 0 to 2 is 1
-```
-- In normal BFS of a graph all edges have `equal weight` but in `0-1 BFS some edges may have 0 weight and some may have 1 weight`. 
-- In this we will not use bool array to mark visited nodes but at each step we will check for the optimal distance condition. We use double ended queue to store the node. While performing BFS if a edge having weight = 0 is found node is pushed at front of double ended queue and if a edge having weight = 1 is found, it is pushed at back of double ended queue.
+# Summary
+- Directed Acyclic Graphs (DAGs) are extremely versatile constructs
+- Applications of DAGs include building neural network models
+- DAGs specify precedence relationship between nodes
+- Any ordering of all nodes that satisfies all relationships is a topological sort
+- Topological sort can be implemented via a simple iterative algorithm
+# Reference:
+- Love this course, very comprehensive :)) https://app.pluralsight.com/library/courses/graph-algorithms-python/table-of-contents
