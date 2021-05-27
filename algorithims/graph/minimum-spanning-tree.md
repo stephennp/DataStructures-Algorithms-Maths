@@ -18,6 +18,27 @@
 # Prim's Algorithm
 - Works with connected graphs
 - Prim’s algorithm is a `greedy` algorithm to find a minimal spanning tree for a weighted undirected graph
+- Implementation heavily drawn from Dijkstra’s algorithm
+- Distance table, but with edge weight as the distance
+- Requires `priority queue` to find edge with least cost
+- Steps:
+  - Start anywhere, pick a node at random
+  - Find the lowest weight edge out of that node
+  - Lowest weighted edge connecting an unvisited node
+  - Add that edge to the result
+  - Now find the lowest weight edge out of either node
+  - Lowest weighted edge connecting an unvisited node
+  - Add that edge to result as well
+  - Once again, find lowest weight edge out of result set
+  - All vertices in spanning  tree, stop  Minimum spanning tree found
+
+- `Benefit`: Intermediate result is a tree as well
+- `Drawback`: Does not work for disconnected graphs
+
+## Complexity
+- Binary Heap : O(E ln(V) )
+- Array : O(E+V^2)
+
 
 # Kruskal's Algorithm
 - Works even with disconnected graphs
