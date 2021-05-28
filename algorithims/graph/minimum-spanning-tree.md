@@ -108,21 +108,33 @@ int main()
 ```
 
 # Kruskal's Algorithm
+
 - Kruskal’s algorithm is a greedy algorithm to find a minimal spanning tree for a weighted undirected graph
 - Works even with disconnected graphs
 - Steps:
-  - Sort edges
+
+  - 1. Sort edges
     - Increasing order of weights
     - Can use priority queue
-  - Find shortest edge
-    - Not currently in result
-    - Dequeue from priority queue
-  - Stop
-    - When N-1 edges in result
-    - N = number of vertices in graphe
-  - Initialize empty result
+  - 2. Initialize empty result
     - Empty set of edges
     - At end will hold minimum spanning tree
-  - Reject if cycle introduced
+  - 3. Find shortest edge
+    - Not currently in result
+    - Dequeue from priority queue
+  - 4. Stop
+
+    - When N-1 edges in result
+    - N = number of vertices in graph
+
+  - 5. Reject if cycle introduced
     - Else add to result set
     - This is a greedy step
+
+- Algorithm does not consider edges in contiguous order
+- `Benefit`: Works for disconnected graphs too
+- `Drawback`: Intermediate result is not necessarily a tree
+
+## Complexity
+
+- Sort : O(E In(E))
