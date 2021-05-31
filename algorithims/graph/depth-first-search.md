@@ -30,6 +30,10 @@ DFS-iterative (G, s):                                   //Where G is graph and s
             if w is not visited:
                 DFS-recursive(G, w)
 ```
+# Steps
+- Create graph with edges
+- Use stack to contain nodes or using recursion solution
+- Remember add visited nodes
 
 # How to find connected components using DFS?
 

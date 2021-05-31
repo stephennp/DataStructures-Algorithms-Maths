@@ -41,6 +41,10 @@ BFS (G, s)   //Where G is the graph and s is the source node
                         mark w as visited.
 
 ```
+# Steps
+- Create graph with edges
+- Use queue to contain nodes
+- Remember add visited nodes
 
 # Implementation
 
