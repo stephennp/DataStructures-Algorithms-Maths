@@ -1,4 +1,58 @@
-Question 1: Describe a situation where you had to solve a problem. What did you do? what was the result? What might you have done differently?
+# Describe a personal weakness that you had to overcome to improve your performance at work? How did you do it?
+-  I focus too much on the details spend too much time analyzing the finer points. I am trying to improve this area by checking my self  at regular intervals and try to refocusing on the bigger picture. 
+-  I can have trouble asking for help.
+  - Because I am independent and enjoy working quickly, it has been difficult for me to ask for help when I need it.
+  -  I also understand that many experts around me have specific knowledge and skills that can make my work better. While I am still working on it, I have been able to produce more high-quality work as a result of getting help from those around me.
+
+# Explain Your Reasons for Leaving a Job 
+- II have been working with a great team in the company for the past 2 years, They have helped me a lot in learning since I had joined , However, I feel like I have reached the optimum point of learning here, and would like to take a step ahead to learn more complex aspects of my field, 
+- It would help me to push my limits and get out of my comfort zone and I am sure I will be able to add value to the team as well 
+-  I’m looking for an opportunity that provides more challenges as I continue developing my skills and abilities
+-  I need motivation from a strong mission while continuing to grow professionally. The mission of your company to serve underrepresented communities is something I’m excited to work on
+- https://www.indeed.com/career-advice/interviewing/how-to-explain-your-reasons-for-leaving-a-job
+- https://www.naukri.com/blog/how-to-answer-why-do-you-want-to-leave-your-current-job-with-sample-answers/
+# Why Do You Want to join the new company?,  Why do you want to work here?
+- I am interested in learning more about the perforamnce and scaling system and this job provide an  opportunity to leverage my current areas of expertise and increase my skills in microservice architecture, depth understading encoding the data,Low-Latency Protocols, bitrate technolgoy
+- I enjoy working as part of a team and am looking for an opportunity to work on an interesting project. The project has a lot of technologies, how to secure the streaming endpoint, how to optimize the bitrate stream to customers has better experiences, how to support large of audiences, delivering the greate streaming experience to audiences around the world and big trend of online activities on mobile devices that can open oppotunities for revenue
+# What Are Your Job Expectations
+- Working with the flexible time 
+- Friendly teamates and have a spirit of teamwork, can help each other when they need, try to share the knowdlege of technologies or soft skills
+- have a some course to learn about soft skills or technologies
+- Oganize some events like games that people can meet and connect together strongly, help them more understand and work happier
+- Have some tech talks sharing the knowlege and have some food or drink after that
+- Have some happy hour that people relax after stress work and eat ,talk together
+- I hope you company will be open to my contributions so that I may become a valued member of your team
+
+
+# What makes you unique?
+ - completing my projects efficiently with a high level of quality.
+ - This allowed me to take on additional responsibilities and eventually led to a promotion
+
+# What are you passionate about?
+- creating truly beautiful, efficient digital products to make people’s experience with technology memorable...”
+- The results of my team’s code update and watching as our months of work yielded positive user feedback
+- Having the opportunity to lead projects from ideation through launch was one of the reasons I was so excited to apply for this role
+
+#  What are your greatest strengths?
+- Delivery products on time
+- Have a passion in technology and ambitious to jump to higher position
+- Careful on detailed 
+- Help teammates with the issues and share the knowlege that help better together
+
+#  Can you tell me about a difficult work situation and how you overcame it?
+- my boss give me a new project with must deliver products to customer for sooner than expectation, i try to have time manamgement plan in detail, break to small tasks and take a bigger picture to reach thought it, i spent some nights to research and complete it. Finanly it work as expected
+# How do you handle stress?
+I’m able to stay calm when I focus on the bigger picture and break down my projects into smaller tasks.
+ I always start by asking myself, “What is the ultimate goal I’m trying to achieve?” From there, I make a list of immediate and long-term action items with achievable but ambitious deadlines.
+ Even if the big project is due tomorrow, I ask myself, ‘What’s something I can tackle in the next 30 minutes?’ Before I know it, I’ve made significant progress and that impossible project doesn’t seem so impossible.”
+
+# What is your greatest accomplishment?
+
+# How do you handle conflict at work?
+I was working as a project manager on an IT project, and one technician was constantly late finishing tasks. When I approached him about it, he reacted defensively. I kept calm and acknowledged that the deadlines were challenging and asked how I could assist him in improving his performance.
+
+He calmed down and told me that he was involved in another project where he had to do tasks that were not in his job description. After a meeting with the other project manager, we came to a resolution that alleviated the technician’s workload. For the remainder of the project, the technician delivered great work.
+# Question 1: Describe a situation where you had to solve a problem. What did you do? what was the result? What might you have done differently?
 This question tests their problem-solving ability. As an employer, you want to hire people that get things done and when faced with a problem actively solve it. There are three steps to solving a problem:
 
     Identify
@@ -8,17 +62,17 @@ A good answer should show that the applicant took the initiative, didn’t act t
 
 
 
-Question 2: Give an example of a situation in which you saw an opportunity in a potential problem. What did you do? What was the outcome?
+# Question 2: Give an example of a situation in which you saw an opportunity in a potential problem. What did you do? What was the outcome?
 This question tests if they see opportunities in problems. Every business has problems, both minor and major, and you should be able to trust your employees to identify and solve them. Problems are opportunities for improvement, both for an individual and a company as a whole.
 
 Essentially you are looking for an answer that recognises this. Whether they solved a problem single-handedly or flagged the issue to a superior, you are looking for applicants who played a key part in arriving at a solution.
 
-Question 3: What steps do you take before making a decision on how to solve a problem, and why?
+# Question 3: What steps do you take before making a decision on how to solve a problem, and why?
 This question tests how they problem solve before making a decision. A strong answer showcases that the candidate is considered in their decision-making and has a formal process of thought, instead of becoming overwhelmed and acting rashly. You should be looking for those that have a formalised process that makes sense, and that shows that they don’t just ask for help the entire time.
 
 
 
-Question 4: Give an example of a time that you realised a colleague had made a mistake. How did you deal with this? What was the outcome?
+# Question 4: Give an example of a time that you realised a colleague had made a mistake. How did you deal with this? What was the outcome?
 This question tests their interpersonal skills. The best type of employees have great interpersonal skills and help others to succeed. Therefore, a good answer should show the candidate was diplomatic and constructive – someone that helps their colleagues to solve problems and doesn’t just highlight them.
 
 Anyone that proceeds to say unsavoury things about previous co-workers should be treated with caution – respect and kindness are core attributes in the workplace.
@@ -41,7 +95,7 @@ You want a candidate to be appropriate when discussing their current (or former 
 Read next: What is staff turnover and how can you reduce it?
 
 
-Question 7: Tell me about a time where you have been caught off-guard by a problem that you had not foreseen? What happened?
+# Question 7: Tell me about a time where you have been caught off-guard by a problem that you had not foreseen? What happened?
 This question tests how they deal with pressure. Even the most careful minds can crash into an unforeseen iceberg, but it is how they deal with it that matters. This question should be a chance for you to catch a glimpse of a candidate’s character and personality. Ideally, you want an answer that shows the following:
 
 Calmness – They don’t overreact
@@ -52,8 +106,8 @@ This question tests their creative problem-solving skills and initiative. If you
 
 
 
-Question 9: Tell me about a time when you became aware of a potential problem and resolved it before it became an issue.
+# Question 9: Tell me about a time when you became aware of a potential problem and resolved it before it became an issue.
 This question tests their ability to identify problems and solve them. Having foresight is important quality and it’s much more than wearing glasses. Foresight is about identifying issues before they actually become issues. Being able to see into the future and red-flagging a problem, is something that you should not only value, but covet – being thoughtful helps avoid disaster.
 
-Question 10: Describe a personal weakness that you had to overcome to improve your performance at work? How did you do it?
-This question test their self-awareness and dedication. Self-awareness is crucial to growth and becoming a better employee. A good answer is one that shows a candidates willingness to improve, whether that be learning new skills or honing their talents. This is a hard problem-solving interview question so a successful response is a testament to their ability.
+# Ref
+- https://www.indeed.com/career-advice/interviewing/top-interview-questions-and-answers
