@@ -1,11 +1,61 @@
-# Describe a personal weakness that you had to overcome to improve your performance at work? How did you do it?
--  I focus too much on the details spend too much time analyzing the finer points. I am trying to improve this area by checking my self  at regular intervals and try to refocusing on the bigger picture. 
--  I can have trouble asking for help.
-  - Because I am independent and enjoy working quickly, it has been difficult for me to ask for help when I need it.
-  -  I also understand that many experts around me have specific knowledge and skills that can make my work better. While I am still working on it, I have been able to produce more high-quality work as a result of getting help from those around me.
 
+#  Can you tell me about a difficult work situation and how you overcame it?
+- my boss give me a new project with must deliver products to customer for sooner than expectation, i try to have time manamgement plan in detail, break to small tasks and take a bigger picture to reach thought it, i spent some nights to research and complete it.
+-  I also reached out for help from my professors, joined study groups and worked on creating a structured schedule which helped me focus on the tasks at hand
+ Finanly it work as expected
+- using problem-solving skills, I pushed the project forward,
+# Delivery vs quantity
+- Delivery
+  -  a deadline and that no one will give you the time needed to write the quality code you’d like to produce.
+  - It is also obvious that no one will accept a buggy code that will crash on production.
+  - buggy behavior exhibited by the code
+  - slow implementation to production
+  - messy code with low cohesion and high coupling
+  -  code that cannot be maintained
+   - usage of obsolete libraries/frameworks
+   - repetition of code leading toward costly refactoring
+
+- Quantity
+  - have thousands of log entries emitted from your system each second, and once you encounter a problem you browse through these logs in order to figure out what went wrong
+  - writing quality logs when you can actually understand the story of what your system does from your log records alone
+  - severity, category, class name, method name,
+  - maintainable
+  - Follows a consistent design style
+  - Remains easy to understand
+  - Requirements have been well documented
+  - Is highly testable via automation
+  - Is easier to comprehend and to follow along (eg, is highly maintainable)
+  - Portability: As its namesake tells us, this is the measurement of how well the software will perform in a variety of environments. It basically ascribes to platform independency.
+# Review code
+- Communication
+- Big class with many methods
+- Security issues. Especially when dealing with db, watch out for sql injection flaws.
+Public fields that should be private
+- A method do a single responsibility
+- Naming convention
+- Large Classes
+- Complex methods
+- Large Components
+- Lot of dependencies
+- Uncovered Code
+- Check Readability of code
+- Reuse
+  - Existing components
+  - Creating new components
+- Scalability
+- Performance
+- Security
+# unclear project
+ - 
+ -  Go for Agile iterative development cycle by requesting feedback from customers at every stage of development. And at the completion of iteration, team members can show stakeholders the completed work and review the results.
+- Make assumptions
+- By breaking down every part of your project into a detailed task,
+- Collapse as many unknowns as quickly as possible
+ - clarify the scope
+- Get feedback from the customer at the earliest opportunity
+- https://www.projectmanagement.com/blog/blogPostingView.cfm?blogPostingID=37519&thisPageURL=/blog-post/37519/Dealing-with-unclear-requirements#_=_
 # Explain Your Reasons for Leaving a Job 
-- II have been working with a great team in the company for the past 2 years, They have helped me a lot in learning since I had joined , However, I feel like I have reached the optimum point of learning here, and would like to take a step ahead to learn more complex aspects of my field, 
+- I have been working with a great team in the company for the past 2 years, They have helped me a lot in learning since I had joined , However, I feel like I have reached the optimum point of learning here, and would like to take a step ahead to learn more complex aspects of my field
 - It would help me to push my limits and get out of my comfort zone and I am sure I will be able to add value to the team as well 
 -  I’m looking for an opportunity that provides more challenges as I continue developing my skills and abilities
 -  I need motivation from a strong mission while continuing to grow professionally. The mission of your company to serve underrepresented communities is something I’m excited to work on
@@ -23,7 +73,11 @@
 - Have some happy hour that people relax after stress work and eat ,talk together
 - I hope you company will be open to my contributions so that I may become a valued member of your team
 
-
+# Describe a personal weakness that you had to overcome to improve your performance at work? How did you do it?
+-  I focus too much on the details spend too much time analyzing the finer points. I am trying to improve this area by checking my self  at regular intervals and try to refocusing on the bigger picture. 
+-  I can have trouble asking for help.
+  - Because I am independent and enjoy working quickly, it has been difficult for me to ask for help when I need it.
+  -  I also understand that many experts around me have specific knowledge and skills that can make my work better. While I am still working on it, I have been able to produce more high-quality work as a result of getting help from those around me.
 # What makes you unique?
  - completing my projects efficiently with a high level of quality.
  - This allowed me to take on additional responsibilities and eventually led to a promotion
@@ -39,8 +93,7 @@
 - Careful on detailed 
 - Help teammates with the issues and share the knowlege that help better together
 
-#  Can you tell me about a difficult work situation and how you overcame it?
-- my boss give me a new project with must deliver products to customer for sooner than expectation, i try to have time manamgement plan in detail, break to small tasks and take a bigger picture to reach thought it, i spent some nights to research and complete it. Finanly it work as expected
+
 # How do you handle stress?
 I’m able to stay calm when I focus on the bigger picture and break down my projects into smaller tasks.
  I always start by asking myself, “What is the ultimate goal I’m trying to achieve?” From there, I make a list of immediate and long-term action items with achievable but ambitious deadlines.
@@ -58,6 +111,7 @@ This question tests their problem-solving ability. As an employer, you want to h
     Identify
     Analyse
     Implement
+    
 A good answer should show that the applicant took the initiative, didn’t act thoughtlessly and was willing to ask questions and work as a team. Ideally their actions were in that order.
 
 
