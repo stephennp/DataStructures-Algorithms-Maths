@@ -20,6 +20,93 @@
 
 // For characters, we use ASCII representation, which are in the form of integers which again can be represented using bits as explained above.
 ```
+# Binary or Bit
+- In binary, each `binary digit` is called a `bit` and can only have one of two values: `one or zero (base 2)`
+
+# Byte
+- A byte is a group of `8` bits. A bit is the most basic unit and can be either 1 or 0. A byte is not just 8 values between 0 and 1, but `256` (28) different combinations (rather permutations) ranging from `00000000 via e.g. 01010101 to 11111111`. Thus, `one byte can represent a decimal number between 0(00) and 255`.
+
+- `Puzzled`? Remember that 3 decimal numbers also don’t just stand for 3 values between 0 and 9, but `1000 (10^3) permutations from 0(00) to 999`.
+## What is a buffer of bytes? 
+- Think of buffer as just another word for an array, list, whatever resonates with your programming experience. Like a byte is a group of 8 bits, a buffer is a group of a pre-defined number of bytes. 
+- If we have a group of 3 bytes, this could either represent 3 values between 0 and 255, but also one single value between `0 and 16777216 (256^3)`.
+
+
+## How to send text? 
+- The short answer is: `don’t`. 
+- `Text uses a lot of bytes`. 
+- Unicode defines more than 128000 characters, so that would take `3 bytes per character`! 
+- There are rarely good reasons to use text instead of numbers, apart from maybe transmitting some user input.
+-  Most of the time only the Alpha-numeric characters suffice, in that case you can get away by using ASCII characters that only use a single byte per character. Every string must be terminated with a NULL (0x00, ‘\0’) character to indicate the string has ended.
+# Decimal
+# Hexadecimal
+
+- Often shortened to `hex`, is a numeral system made up of `16` symbols `(base 16)`. 
+- 0,1,2,3,4,5,6,7,8,9,A, B, C, D, E and F
+- Hexadecimal `A = decimal 10`, and hexadecimal `F = decimal 15`.
+- For example, the three digit decimal value `219` requires eight bits to be represented in binary (11011011). Humans find reading, remembering, and typing long strings of bits inconvenient. Hexadecimal allows groups of four bits to be more conveniently represented by a single "hex" digit, so the eight bit binary value 11011011 only requires two hexadecimal digits `DB`
+- To avoid confusion with decimal, octal or other numbering systems, hexadecimal numbers are sometimes written with a `h` after or `0x` before the number. For example, `63h` and `0x63` mean 63 hexadecimal.
+
+|  Hex |        Binary       |  Octal | Decimal |
+|:----:|:-------------------:|:------:|:-------:|
+| 0    | 0                   | 0      | 0       |
+| 1    | 1                   | 1      | 1       |
+| 2    | 10                  | 2      | 2       |
+| 3    | 11                  | 3      | 3       |
+| 4    | 100                 | 4      | 4       |
+| 5    | 101                 | 5      | 5       |
+| 6    | 110                 | 6      | 6       |
+| 7    | 111                 | 7      | 7       |
+| 8    | 1000                | 10     | 8       |
+| 9    | 1001                | 11     | 9       |
+| A    | 1010                | 12     | 10      |
+| B    | 1011                | 13     | 11      |
+| C    | 1100                | 14     | 12      |
+| D    | 1101                | 15     | 13      |
+| E    | 1110                | 16     | 14      |
+| F    | 1111                | 17     | 15      |
+| 10   | 1 0000              | 20     | 16      |
+| 11   | 1 0001              | 21     | 17      |
+| 24   | 10 0100             | 44     | 36      |
+| 5E   | 101 1110            | 136    | 94      |
+| 100  | 1 0000 0000         | 400    | 256     |
+| 3E8  | 11 1110 1000        | 1750   | 1000    |
+| 1000 | 1 0000 0000 0000    | 10000  | 4096    |
+| FACE | 1111 1010 1100 1110 | 175316 | 64206   |
+|      |                     |        |         |
+
+## Binary to hexadecimal
+Changing a number from binary to hex uses a grouping method. The binary number is separated into groups of four digits starting from the right. These groups are then converted to hexadecimal digits as shown in the chart above for the hexadecimal numbers 0 through F. To change from hexadecimal, the reverse is done. The hex digits are each changed to binary and the grouping is usually removed.
+
+|      Binary      | Groupings |      |      |      |  Hex |
+|:----------------:|:---------:|:----:|:----:|:----:|:----:|
+| 01100101         |           |      | 0110 | 0101 | 65   |
+| 010010110110     |           | 0100 | 1011 | 0110 | 4B6  |
+| 1101011101011010 | 1101      | 0111 | 0101 | 1010 | D75A |
+
+- When the quantity of bits in a binary numbers is not a multiple of 4, it is padded with zeros to make it so. Examples:
+  - binary 110 = 0110, which is 6 Hex.
+  - binary 010010 = 00010010, which is 12 Hex.
+## Hexadecimal to decimal
+
+Example: 5Fh and 3425h to decimal, method 1
+
+```
+5Fh to decimal
+Hex		Decimal
+5Fh	=	( 5 x 16 )	+	( 15 x 1 )
+    =	80	+	15
+5Fh	=	95
+ 	
+3425h to decimal
+Hex		Decimal
+3425h	=	( 3 x 4096 )	+	( 4 x 256 )	+	( 2 x 16)	+	( 5 x 1 )
+=	12288	+	1024	+	32	+	5
+3425h	=	13349
+
+```
+
+
 # Unsigned and Signed Binary Numbers
 
 - Variables such as integers can be represent in two ways, i.e., signed and unsigned. 
@@ -266,3 +353,49 @@ possibleSubsets(A, N):
         }
     }
 ```
+
+# History of ASCII
+- Both are stored in a byte (8 bits), but the original ASCII standard only defined the values 0–127 (ie, the lower 7 bits). The high bit, and thus the values 128–255, were left undefined.
+
+- Why would anyone make a standard like that?
+
+- In data transmission of the day, each bit took enough time to transmit that if you could only send 7 instead of 8, that was a 1/8th speed improvement.
+
+- Since bytes with the high bit set were not valid ASCII data, some programs of the “8 bit era” used the high bit as a marker of some kind, so that a letter A with the high bit set might be considered a bolded A, or the first letter of a sentence, etc.
+
+- But unfortunately, 7 bit ASCII didn’t contain characters useful for languages other than English, and by the 80’s, most computer manufacturers had added their own set of characters in the “high number” space - ATASCII for Atari, PETSCII for Commodore, etc. In many cases, these character sets included things like block graphics, playing card symbols (hearts, clubs, etc.), but there were no standards beyond 127.
+
+- Eventually, the ISO group stepped in (see wikipedia’s Extended_ASCII article for a good discussion) and eventually we wound up with UTF-8 Unicode, which is a superset of ASCII-7, and a very popular encoding scheme (to say the least).
+
+## ASCII Extended
+
+Some clever people started using the 8th bit (the bit used for parity) to encode more characters to support their language (to support "é", in French, for example). Just using one extra bit doubled the size of the original ASCII table to map up to 256 characters (2^8 = 256 characters). And not 2^7 as before (128).
+```
+10000010 -> é (e with acute accent - 130)
+10100000 -> á (a with acute accent - 160)
+```
+The name for this "ASCII extended to 8 bits and not 7 bits as before" could be just referred as "extended ASCII" or "8-bit ASCII".
+
+## Unicode, The Rise
+
+- ASCII Extended solves the problem for languages that are based on the Latin alphabet... what about the others needing a completely different alphabet? Greek? Russian? Chinese and the likes?
+
+- We would have needed an entirely new character set... that's the rational behind Unicode. Unicode doesn't contain every character from every language, but it sure contains a gigantic amount of characters (see this table).
+
+- You cannot save text to your hard drive as "Unicode". Unicode is an abstract representation of the text. You need to "encode" this abstract representation. That's where an encoding comes into play.
+
+- Encodings: UTF-8 vs UTF-16 vs UTF-32
+
+- This answer does a pretty good job at explaining the basics:
+
+  - UTF-8 and UTF-16 are variable length encodings.
+  - In UTF-8, a character may occupy a minimum of 8 bits.
+  - In UTF-16, a character length starts with 16 bits.
+  - UTF-32 is a fixed length encoding of 32 bits.
+  - UTF-8 uses the ASCII set for the first 128 characters. That's handy because it means ASCII text is also valid in UTF-8.
+
+- Mnemonics:
+
+  - UTF-8: minimum 8 bits.
+  - UTF-16: minimum 16 bits.
+  - UTF-32: minimum and maximum 32 bits.
